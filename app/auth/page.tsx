@@ -1,19 +1,45 @@
 'use client';
-import dynamic from "next/dynamic";
-import { useState } from "react";
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
+import Signup from '../components/signup';
+import Login from '../components/login';
+import { signInWithGoogle  } from '@/redux/feature/users/userSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch} from '@/redux/store';
 
-const Login = dynamic(() => import('../components/login'), { ssr: true });
+const Page = () => {
+  const [showLogin, setShowLogin] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
 
-export default function Page() {
-    const [userData, setUserData] = useState({
-        email: '',
-        password: ''
-    });
 
-    return (
-        <div>
-            {/* Other content */}
-            <Login data={userData} />
-        </div>
-    );
-}
+  const toggleForm = () => {
+    setShowLogin(!showLogin);
+  };
+
+  async function handleSignInWithGoogle (){ 
+    dispatch(signInWithGoogle());
+
+  }
+
+  return (
+    <div>
+      {showLogin ? (
+        <Login />
+      ) : (
+        <Signup />
+      )}
+      <div className='text-center my-5'>
+        <button onClick={toggleForm}>
+          {showLogin ? 'Switch to Signup' : 'Switch to Login'}
+        </button>
+      </div>
+      <div className='text-center my-5'>
+        <button type='button' onClick={() => {handleSignInWithGoogle()}}> 
+          <span> Sign In with Google </span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Page;
