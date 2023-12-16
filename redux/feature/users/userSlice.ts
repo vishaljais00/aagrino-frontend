@@ -1,6 +1,6 @@
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 
 interface UserState {
   username: string | null;
@@ -40,6 +40,20 @@ export const signInWithGoogle = createAsyncThunk(
     }
 )
 
+
+export const logOutAsync = createAsyncThunk(
+    'user/logOut',
+    async (arg, thunkAPI) => {
+        signOut(auth)
+        .then(() => {
+            console.log("signed out successfully ! ");
+            thunkAPI.dispatch(clearUser());
+        }).catch((err) => {
+
+        })
+    }
+)
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -56,8 +70,17 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    clearUser: (state) => {
+        state.data = null;
+        state.loading = false;
+        state.error = null;
+    },
+
   },
 });
 
-export const { userStart , userSuccess , userFailure } = userSlice.actions;
+export const { userStart , userSuccess , userFailure , clearUser} = userSlice.actions;
 export default userSlice.reducer;
+
+
