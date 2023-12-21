@@ -1,4 +1,7 @@
+"use client";
 import React from "react";
+import AccountMenu from "./accountMenu";
+import { redirect } from "next/navigation";
 
 const Navbar: React.FC = () => {
   return (
@@ -29,7 +32,7 @@ const Navbar: React.FC = () => {
           />
         </div>
         <ul className="flex items-center space-x-6">
-          <li className="font-semibold text-gray-700">Home</li>
+          <li onClick={()=>{redirect('/')}} className="font-semibold text-gray-700">Home</li>
           <li className="font-semibold text-gray-700">Articles</li>
           <li>
             <svg
@@ -81,6 +84,7 @@ const Navbar: React.FC = () => {
               />
             </svg>
           </li>
+          <AccountMenu/>
         </ul>
       </div>
     </nav>

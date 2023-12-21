@@ -23,3 +23,20 @@ export interface IProduct {
   ProductTag: ProductTag[];
   ProductsImage: ProductsImage[];
 }
+export interface UserState {
+  username: string | null;
+  email: string | null;
+  token: string | null;
+  pic: string | null;
+}
+
+export interface UserForm {
+  email: string;
+  password: string;
+}
+
+export interface IuserData {
+  data: UserState | null;
+  loading: boolean;
+  error: string | null;
+}

@@ -6,7 +6,6 @@ import Link from "next/link";
 
 const Product = () => {
   const { data, error, isLoading } = useGetAllProductsQuery("bulbasaur");
-  console.log("JSS log :", data?.data, isLoading);
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">

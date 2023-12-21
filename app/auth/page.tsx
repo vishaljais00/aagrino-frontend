@@ -6,6 +6,7 @@ import Login from "../components/login";
 import { logOutAsync, signInWithGoogle } from "@/redux/feature/users/userSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
+import ProctedHOC from "../hoc/loginHoc";
 
 const Page = () => {
   const [showLogin, setShowLogin] = useState(true);
@@ -55,4 +56,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default ProctedHOC(Page);

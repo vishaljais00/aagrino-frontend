@@ -1,29 +1,12 @@
 import { BASEURL } from '@/app/constants';
+import { IuserData, UserForm, UserState } from '@/app/constants/interface';
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
-interface UserState {
-  username: string | null;
-  email: string | null;
-  token: string | null;
-  pic: string | null;
-}
-
-interface UserForm {
-  email: string;
-  password: string;
-}
-
-interface userData {
-  data: UserState | null;
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: userData = {
+const initialState: IuserData = {
   data: null,
   loading: true,
   error: null
@@ -42,7 +25,6 @@ export const signInWithGoogle = createAsyncThunk(
           token: null,
           password: res.user.uid
         }
-        console.log('JSS log currentUser:', currentUser)
         thunkAPI.dispatch(userSuccess(currentUser));
       }).catch((err) => {
       }).catch((err) => {
@@ -53,7 +35,7 @@ export const signInWithGoogle = createAsyncThunk(
 
 export const signinmanually = createAsyncThunk(
   "user/signinmanually",
-  async ({ email, password }: UserForm, { rejectWithValue , dispatch }) => {
+  async ({ email, password }: UserForm, { rejectWithValue, dispatch }) => {
     try {
       const config = {
         headers: {
@@ -74,7 +56,7 @@ export const signinmanually = createAsyncThunk(
       dispatch(userSuccess(currentUser))
       toast.success("User login successfully")
     } catch (error: any) {
-    // return custom error message from backend if present
+      // return custom error message from backend if present
       if (error.response && error.response.data.message) {
         dispatch(userFailure(error.response.data.message))
         toast.error(error.response.data.message)
@@ -92,7 +74,6 @@ export const logOutAsync = createAsyncThunk(
   async (arg, thunkAPI) => {
     signOut(auth)
       .then(() => {
-        console.log("signed out successfully ! ");
         thunkAPI.dispatch(clearUser());
       }).catch((err) => {
 
