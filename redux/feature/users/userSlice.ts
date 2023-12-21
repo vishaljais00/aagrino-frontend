@@ -1,11 +1,20 @@
+import { BASEURL } from '@/app/constants';
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 interface UserState {
   username: string | null;
   email: string | null;
+  token: string | null;
   pic: string | null;
+}
+
+interface UserForm {
+  email: string;
+  password: string;
 }
 
 interface userData {
@@ -30,6 +39,7 @@ export const signInWithGoogle = createAsyncThunk(
           username: res.user.displayName,
           email: res.user.email,
           pic: res.user.photoURL,
+          token: null,
           password: res.user.uid
         }
         console.log('JSS log currentUser:', currentUser)
@@ -38,6 +48,41 @@ export const signInWithGoogle = createAsyncThunk(
       }).catch((err) => {
         thunkAPI.dispatch(userFailure(err.message));
       })
+  }
+)
+
+export const signinmanually = createAsyncThunk(
+  "user/signinmanually",
+  async ({ email, password }: UserForm, { rejectWithValue , dispatch }) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      const res = await axios.post(
+        `${BASEURL}auth/login`,
+        { email, password },
+        config
+      )
+      const currentUser = {
+        username: email.split('@')[0],
+        email: email,
+        token: res.data.accessToken,
+        pic: null,
+      }
+      dispatch(userSuccess(currentUser))
+      toast.success("User login successfully")
+    } catch (error: any) {
+    // return custom error message from backend if present
+      if (error.response && error.response.data.message) {
+        dispatch(userFailure(error.response.data.message))
+        toast.error(error.response.data.message)
+        return rejectWithValue(error.response.data.message)
+      } else {
+        return rejectWithValue(error.message)
+      }
+    }
   }
 )
 
@@ -79,6 +124,7 @@ const userSlice = createSlice({
     },
 
   },
+
 });
 
 export const { userStart, userSuccess, userFailure, clearUser } = userSlice.actions;

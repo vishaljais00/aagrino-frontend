@@ -1,5 +1,5 @@
 "use client";
-import { useGetAllProductsQuery } from "@/redux/feature/users/productAPI";
+import { useGetAllProductsQuery } from "@/redux/feature/products/productAPI";
 import React from "react";
 import { IProduct } from "../constants/interface";
 import Link from "next/link";
@@ -10,6 +10,7 @@ const Product = () => {
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
+        <h1> Products page</h1>
         <div className="flex flex-wrap -m-4">
           {data?.data.map((item: IProduct) => {
             return (

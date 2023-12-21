@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { store } from "../redux/store";
 import ReduxProvider from "@/redux/providers";
 import Navbar from "./components/navbar";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReduxProvider>
+        <ToastContainer theme="dark" autoClose={2000}/>
           <Navbar />
           {children}
         </ReduxProvider>

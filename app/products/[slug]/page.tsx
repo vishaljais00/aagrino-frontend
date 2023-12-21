@@ -1,5 +1,5 @@
 "use client";
-import { useGetProductBySlugQuery } from "@/redux/feature/users/productAPI";
+import { useGetProductBySlugQuery } from "@/redux/feature/products/productAPI";
 import { useParams } from "next/navigation";
 
 const SingleProduct = () => {
