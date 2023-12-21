@@ -23,6 +23,7 @@ export const signInWithGoogle = createAsyncThunk(
           email: res.user.email,
           pic: res.user.photoURL,
           token: null,
+          withGoogle:true,
           password: res.user.uid
         }
         thunkAPI.dispatch(userSuccess(currentUser));
