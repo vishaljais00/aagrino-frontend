@@ -5,7 +5,8 @@ import { RootState } from "@/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { UserForm } from "../constants/interface";
+import { IerrorFormat, UserForm } from "../constants/interface";
+import { userFailure } from "@/redux/feature/users/userSlice";
 
 type FormValues = {
   password: string;
@@ -13,10 +14,11 @@ type FormValues = {
 };
 
 const Login: React.FC = () => {
+  const dispatch  = useDispatch()
   const userData = useSelector((state: RootState) => state.user);
   const [loginUser, { isLoading, isError, isSuccess, error }] =
     useUserAuthMutation();
-  console.log("JSS log :", { isError, error });
+
   const {
     register,
     handleSubmit,
@@ -24,15 +26,24 @@ const Login: React.FC = () => {
     formState: { errors, isDirty },
   } = useForm<FormValues>();
 
+  
+ 
   const onSubmit = async (userdata: UserForm) => {
     try {
       await loginUser(userdata);
       console.log("res", isLoading, isError, isSuccess);
-    } catch (error: any) {
-      console.log("JSS log :", { error });
+      
+      if(isError && error){
+        console.log("JSS log aaa:",error);
+        dispatch(userFailure(error as IerrorFormat))
+      }
+      
+    } catch (errors: any) {
+      console.log("JSS log error:", { errors });
+     
       setError("email", {
         type: "manual",
-        message: error.message, // Use the appropriate error message from the API response
+        message: 'gvh' // Use the appropriate error message from the API response
       });
     }
   };
@@ -40,12 +51,14 @@ const Login: React.FC = () => {
   useEffect(() => {
     // Reset API error when userData.error changes
     if (userData.error) {
+      console.log("errro coocured");
+      
       setError("email", {
         type: "manual",
-        message: "userData.error", // Reset the API error message
+        message: userData.error, // Reset the API error message
       });
     }
-  }, [userData.error, setError]);
+  }, [userData.error, setError ]);
 
   return (
     <>
@@ -84,7 +97,7 @@ const Login: React.FC = () => {
             placeholder="********"
             {...register("password", { minLength: 6 })}
           />
-          {userData.error ? <p> {userData.error.message}</p> : null}
+          {userData.error ? <p> {userData.error}</p> : null}
         </div>
         <button
           type="submit"

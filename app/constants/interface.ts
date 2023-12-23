@@ -31,8 +31,9 @@ export interface UserState {
 }
 
 export interface IerrorFormat {
-  status: string | null;
+  status?: string | null;
   message: string | null;
+  data?: unknown;
 }
 
 export interface UserForm {
@@ -43,5 +44,5 @@ export interface UserForm {
 export interface IuserData {
   data: UserState | null;
   loading: boolean;
-  error: any;
+  error: string | null;
 }

@@ -11,13 +11,15 @@ import Tooltip from "@mui/material/Tooltip";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { clearUser } from "@/redux/feature/users/userSlice";
 
 export default function AccountMenu() {
   const router = useRouter();
   const userData = useSelector((state: RootState) => state?.user?.data);
+  const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,6 +27,7 @@ export default function AccountMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    dispatch(clearUser())
   };
   return (
     <React.Fragment>

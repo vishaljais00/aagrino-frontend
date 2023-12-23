@@ -1,5 +1,5 @@
-import { BASEURL, LOCAL_USER, getCookieUser } from '@/app/constants';
-import { IuserData, UserForm, UserState } from '@/app/constants/interface';
+import { BASEURL, LOCAL_USER, getData, removeData, setData} from '@/app/constants';
+import { IerrorFormat, IuserData, UserForm, UserState } from '@/app/constants/interface';
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -10,10 +10,11 @@ import { Cookies } from 'react-cookie';
 const cookies = new Cookies();
 
 import { userAuthApi } from './userAPI';
-
+const AgData = getData(LOCAL_USER)
+console.log("AgData",AgData)
 const initialState: IuserData = {
-  data: getCookieUser() ? JSON.parse(getCookieUser()): null,
-  loading: true,
+  data: AgData !== null ? JSON.parse(AgData) : null,
+  loading: false,
   error: null
 };
 
@@ -95,26 +96,27 @@ const userSlice = createSlice({
       state.loading = true
     },
     userSuccess: (state, action: PayloadAction<UserState>) => {
-      console.log('JSS log :', { state, action })
       state.data = action.payload;
       state.loading = false;
     },
-    userFailure: (state, action: PayloadAction<string>) => {
+    userFailure: (state, action: PayloadAction<IerrorFormat>) => {
       state.data = null;
       state.loading = false;
-      state.error = null;
+      state.error = action.payload.message;
     },
 
     clearUser: (state) => {
       state.data = null;
       state.loading = false;
       state.error = null;
+      removeData(LOCAL_USER);
     },
 
   },
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
       state.data = { ...payload }
+      setData(LOCAL_USER, JSON.stringify({ ...payload }))
     })
   }
 });
