@@ -28,16 +28,6 @@ export const userAuthApi = createApi({
         method: 'POST',
         body: userData,
       }),
-      // Pick out data and prevent nested properties in a hook or selector
-      transformResponse: (response: any) => {
-        userSuccess(response)
-        return response
-      },
-      // Pick out error and prevent nested properties in a hook or selector
-      transformErrorResponse: (response: any) => {
-        console.log("response", response)
-      },
-
     }),
     userProfile: builder.query({
       query: () => ({ url: `user` }),

@@ -4,7 +4,7 @@ import React from "react";
 
 const Profile = () => {
   const { data, isError, isSuccess } = useUserProfileQuery(0);
-  // console.log("JSS log :", { data, isSuccess, isError });
+  console.log("JSS log :", { data, isSuccess, isError });
   return (
     <div className="flex items-center justify-center p-12">
       {/* Author: FormBold Team */}
