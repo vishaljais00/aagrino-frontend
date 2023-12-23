@@ -1,4 +1,4 @@
-import { BASEURL } from '@/app/constants';
+import { BASEURL, LOCAL_USER } from '@/app/constants';
 import { IuserData, UserForm, UserState } from '@/app/constants/interface';
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -12,8 +12,8 @@ const cookies = new Cookies();
 import { userAuthApi } from './userAPI';
 
 const initialState: IuserData = {
-  data: cookies.get("aag_user")
-  ? JSON.parse(cookies.get("aag_user"))
+  data: cookies.get(LOCAL_USER)
+  ? JSON.parse(cookies.get(LOCAL_USER))
   : null,
   loading: true,
   error: null
@@ -118,6 +118,7 @@ const userSlice = createSlice({
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
       state.data = {...payload}
     })
+
   }
 });
 
