@@ -5,10 +5,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
+import { Cookies} from 'react-cookie';
+
+const cookies = new Cookies();
+
 import { userAuthApi } from './userAPI';
 
 const initialState: IuserData = {
-  data: null,
+  data: cookies.get("aag_user")
+  ? JSON.parse(cookies.get("aag_user"))
+  : null,
   loading: true,
   error: null
 };

@@ -1,6 +1,6 @@
 import { BASEURL } from '@/app/constants';
 import { UserForm } from '@/app/constants/interface';
-import { RootState } from '@/redux/store';
+import { RootState, AppDispatch } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
 import { userSuccess } from './userSlice';
