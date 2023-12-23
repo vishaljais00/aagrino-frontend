@@ -1,17 +1,34 @@
 import { BASEURL } from '@/app/constants';
 import { UserForm } from '@/app/constants/interface';
+import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { useSelector } from 'react-redux';
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: BASEURL + 'auth/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASEURL,
+    prepareHeaders: (headers, { getState }) => {
+      const myState: RootState = getState() as RootState;
+      const userData = myState.user.data
+
+      if (userData?.token) {
+        headers.set('Authorization', `Bearer ${userData?.token}`);
+      }
+
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     userAuth: builder.mutation({
       query: (userData: UserForm) => ({
-        url: `login`,
+        url: `auth/login`,
         method: 'POST',
         body: userData,
       }),
+
+
       // Pick out data and prevent nested properties in a hook or selector
       transformResponse: (response: any) => {
         console.log("response", response)
@@ -21,9 +38,12 @@ export const userAuthApi = createApi({
         console.log("response", response)
       }
 
+    }),
+    userProfile: builder.query({
+      query: () => ({ url: `user` }),
     })
   }),
 
 });
 
-export const { useUserAuthMutation } = userAuthApi;
+export const { useUserAuthMutation, useUserProfileQuery } = userAuthApi;
