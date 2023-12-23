@@ -12,7 +12,7 @@ const cookies = new Cookies();
 import { userAuthApi } from './userAPI';
 
 const initialState: IuserData = {
-  data: getCookieUser(),
+  data: getCookieUser() ? JSON.parse(getCookieUser()): null,
   loading: true,
   error: null
 };
@@ -115,13 +115,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
       state.data = {...payload}
-    }),
-
-    builder.addMatcher(userAuthApi.endpoints.userAuth.matchRejected, (state, { payload }) => {
-      state.error = {};
-      state.data = null
     })
-
   }
 });
 
