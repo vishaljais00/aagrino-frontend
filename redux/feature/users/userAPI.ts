@@ -3,6 +3,7 @@ import { UserForm } from '@/app/constants/interface';
 import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
+import { userSuccess } from './userSlice';
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',
@@ -27,16 +28,15 @@ export const userAuthApi = createApi({
         method: 'POST',
         body: userData,
       }),
-
-
       // Pick out data and prevent nested properties in a hook or selector
       transformResponse: (response: any) => {
-        console.log("response", response)
+        userSuccess(response)
+        return response
       },
       // Pick out error and prevent nested properties in a hook or selector
       transformErrorResponse: (response: any) => {
         console.log("response", response)
-      }
+      },
 
     }),
     userProfile: builder.query({
