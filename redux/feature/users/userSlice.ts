@@ -1,4 +1,4 @@
-import { BASEURL, LOCAL_USER } from '@/app/constants';
+import { BASEURL, LOCAL_USER, getCookieUser } from '@/app/constants';
 import { IuserData, UserForm, UserState } from '@/app/constants/interface';
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -12,9 +12,7 @@ const cookies = new Cookies();
 import { userAuthApi } from './userAPI';
 
 const initialState: IuserData = {
-  data: cookies.get(LOCAL_USER)
-  ? JSON.parse(cookies.get(LOCAL_USER))
-  : null,
+  data: getCookieUser(),
   loading: true,
   error: null
 };
@@ -58,7 +56,7 @@ export const signinmanually = createAsyncThunk(
       const currentUser = {
         username: email.split('@')[0],
         email: email,
-        token: res.data.accessToken,
+        token: res.data.token,
         pic: null,
       }
       dispatch(userSuccess(currentUser))
@@ -104,7 +102,7 @@ const userSlice = createSlice({
     userFailure: (state, action: PayloadAction<string>) => {
       state.data = null;
       state.loading = false;
-      state.error = action.payload;
+      state.error = null;
     },
 
     clearUser: (state) => {
@@ -117,6 +115,11 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
       state.data = {...payload}
+    }),
+
+    builder.addMatcher(userAuthApi.endpoints.userAuth.matchRejected, (state, { payload }) => {
+      state.error = {};
+      state.data = null
     })
 
   }

@@ -30,6 +30,11 @@ export interface UserState {
   pic: string | null;
 }
 
+export interface IerrorFormat {
+  status: string | null;
+  message: string | null;
+}
+
 export interface UserForm {
   email: string;
   password: string;
@@ -38,5 +43,5 @@ export interface UserForm {
 export interface IuserData {
   data: UserState | null;
   loading: boolean;
-  error: string | null;
+  error: IerrorFormat | null;
 }

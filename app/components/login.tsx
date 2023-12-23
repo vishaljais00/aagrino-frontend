@@ -83,7 +83,7 @@ const Login: React.FC = () => {
             placeholder="********"
             {...register("password", { minLength: 6 })}
           />
-          {userData.error ? <p> {userData.error}</p> : null}
+          {userData.error ? <p> {userData.error.message}</p> : null}
         </div>
         <button
           type="submit"

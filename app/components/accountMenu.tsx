@@ -47,7 +47,7 @@ export default function AccountMenu() {
                   alt="User Image"
                 />
               ) : (
-                userData?.username && userData.username[0]
+                userData && userData.username
               )}
             </Avatar>
           </IconButton>
