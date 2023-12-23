@@ -7,9 +7,9 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { Cookies} from 'react-cookie';
 
-
 const cookies = new Cookies();
 
+import { userAuthApi } from './userAPI';
 
 const initialState: IuserData = {
   data: cookies.get("aag_user")
@@ -30,7 +30,7 @@ export const signInWithGoogle = createAsyncThunk(
           email: res.user.email,
           pic: res.user.photoURL,
           token: null,
-          withGoogle:true,
+          withGoogle: true,
           password: res.user.uid
         }
         thunkAPI.dispatch(userSuccess(currentUser));
@@ -97,6 +97,7 @@ const userSlice = createSlice({
       state.loading = true
     },
     userSuccess: (state, action: PayloadAction<UserState>) => {
+      console.log('JSS log :', { state, action })
       state.data = action.payload;
       state.loading = false;
     },
@@ -113,7 +114,11 @@ const userSlice = createSlice({
     },
 
   },
-
+  extraReducers: (builder) => {
+    builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
+      state.data = {...payload}
+    })
+  }
 });
 
 export const { userStart, userSuccess, userFailure, clearUser } = userSlice.actions;
