@@ -1,8 +1,14 @@
 import { BASEURL } from '@/app/constants';
 import { UserForm } from '@/app/constants/interface';
-import { RootState } from '@/redux/store';
+import { RootState, AppDispatch } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { useSelector } from 'react-redux';
+// import { useDispatch } from 'react-redux';
+import { Cookies} from 'react-cookie';
+// import { userSuccess } from './userSlice';
+
+
+const cookies = new Cookies();
+// const dispatch = new useDispatch()
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',
@@ -27,15 +33,25 @@ export const userAuthApi = createApi({
         method: 'POST',
         body: userData,
       }),
-
-
       // Pick out data and prevent nested properties in a hook or selector
-      transformResponse: (response: any) => {
-        console.log("response", response)
+      transformResponse: (response: any, meta , args) => {
+        console.log("response success", response, meta , args)
+        const currentUser = {
+          username: args?.email.split('@')[0],
+          email: args?.email,
+          token: response.accessToken,
+          pic: null,
+        }
+
+        // const dispatch = useDispatch() 
+        // dispatch(userSuccess(currentUser))
+        cookies.set('aag-user', JSON.stringify(currentUser), {
+          path: '/'
+        })
       },
       // Pick out error and prevent nested properties in a hook or selector
       transformErrorResponse: (response: any) => {
-        console.log("response", response)
+        console.log("response error", response)
       }
 
     }),

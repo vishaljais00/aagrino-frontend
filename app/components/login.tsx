@@ -22,9 +22,11 @@ const Login: React.FC = () => {
     formState: { errors, isDirty },
   } = useForm<FormValues>();
 
-  const onSubmit = async (data: UserForm) => {
+  const onSubmit = async (userdata: UserForm) => {
     try {
-      await loginUser(data);
+      await loginUser(userdata);
+      console.log("res",isLoading, isError, isSuccess);
+      
     } catch (error: any) {
       console.log("JSS log :", { error });
       setError("email", {
