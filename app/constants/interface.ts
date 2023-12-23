@@ -43,5 +43,5 @@ export interface UserForm {
 export interface IuserData {
   data: UserState | null;
   loading: boolean;
-  error: IerrorFormat | null;
+  error: any;
 }

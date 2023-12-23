@@ -5,7 +5,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
-import { Cookies} from 'react-cookie';
+import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
 
@@ -114,12 +114,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
-      state.data = {...payload}
-    }),
-
-    builder.addMatcher(userAuthApi.endpoints.userAuth.matchRejected, (state, { payload }) => {
-      state.error = {};
-      state.data = null
+      state.data = { ...payload }
     })
 
   }

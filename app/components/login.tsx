@@ -14,7 +14,9 @@ type FormValues = {
 
 const Login: React.FC = () => {
   const userData = useSelector((state: RootState) => state.user);
-  const [loginUser, { isLoading, isError, isSuccess }] = useUserAuthMutation();
+  const [loginUser, { isLoading, isError, isSuccess, error }] =
+    useUserAuthMutation();
+  console.log("JSS log :", { isError, error });
   const {
     register,
     handleSubmit,
@@ -25,8 +27,7 @@ const Login: React.FC = () => {
   const onSubmit = async (userdata: UserForm) => {
     try {
       await loginUser(userdata);
-      console.log("res",isLoading, isError, isSuccess);
-      
+      console.log("res", isLoading, isError, isSuccess);
     } catch (error: any) {
       console.log("JSS log :", { error });
       setError("email", {

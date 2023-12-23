@@ -4,6 +4,6 @@ export const fileUrl = "http://campaigns.cybermatrixsolutions.com/uploads/sallon
 export const LOCAL_USER = 'aag-user'
 export const getCookieUser = () => {
   const cookies = new Cookies();
-  return JSON.parse(cookies.get("aag_user")) ?? null
+  // return JSON.parse(cookies.get("aag_user")) ?? null
 }
 
