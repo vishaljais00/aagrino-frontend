@@ -13,13 +13,14 @@ import Logout from "@mui/icons-material/Logout";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { clearUser } from "@/redux/feature/users/userSlice";
+import Link from "next/link";
 
 export default function AccountMenu() {
   const router = useRouter();
   const userData = useSelector((state: RootState) => state?.user?.data);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,7 +28,6 @@ export default function AccountMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    dispatch(clearUser())
   };
   return (
     <React.Fragment>
@@ -61,7 +61,7 @@ export default function AccountMenu() {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        // onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -91,7 +91,9 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={()=>router.push("user/profile")}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link href={"/user/profile"}>My account</Link>{" "}
+        </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -99,7 +101,13 @@ export default function AccountMenu() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+
+        <MenuItem
+          onClick={() => {
+            dispatch(clearUser());
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

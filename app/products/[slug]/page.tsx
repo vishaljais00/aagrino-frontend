@@ -8,7 +8,6 @@ const SingleProduct = () => {
   // Use the 'slug' value to fetch product data
 
   const { data, error, isLoading } = useGetProductBySlugQuery(slug as string);
-  console.log("JSS log :", { data });
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">

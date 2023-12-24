@@ -1,12 +1,12 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import Signup from "../components/signup";
-import Login from "../components/login";
 import { logOutAsync, signInWithGoogle } from "@/redux/feature/users/userSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import ProctedHOC from "../hoc/loginHoc";
+import WithoutUser from "../../hoc/withoutUser";
+import Signup from "@/components/signup";
+import Login from "@/components/login";
 
 const Page = () => {
   const [showLogin, setShowLogin] = useState(true);
@@ -56,4 +56,4 @@ const Page = () => {
   );
 };
 
-export default ProctedHOC(Page);
+export default WithoutUser(Page);

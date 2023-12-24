@@ -1,4 +1,5 @@
-import React from 'react';
+import Link from "next/link";
+import React from "react";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -10,7 +11,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
       <nav className="bg-black text-white py-4 px-5 flex justify-between items-center">
         <h3 className="text-xl"> Logo</h3>
         <ul className="flex items-center gap-8">
-          <li>Home</li>
+          <li>
+            <Link href={"/"}>Home</Link>
+          </li>
           <li>About Us</li>
           <li>Contact Us</li>
           <li>Login</li>

@@ -1,5 +1,5 @@
-import { BASEURL, LOCAL_USER, getData, removeData, setData} from '@/app/constants';
-import { IerrorFormat, IuserData, UserForm, UserState } from '@/app/constants/interface';
+import { BASEURL, LOCAL_USER, getData, removeData, setData } from '@/constants';
+import { IerrorFormat, IuserData, UserForm, UserState } from '@/constants/interface';
 import { auth } from '@/firebase/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -7,13 +7,12 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { Cookies } from 'react-cookie';
 
-const cookies = new Cookies();
 
 import { userAuthApi } from './userAPI';
-const AgData = getData(LOCAL_USER)
-console.log("AgData",AgData)
+// const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
-  data: AgData !== null ? JSON.parse(AgData) : null,
+  // data: AgData !== null ? JSON.parse(AgData) : null,
+  data: null,
   loading: false,
   error: null
 };
@@ -115,8 +114,8 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
-      state.data = { ...payload }
-      setData(LOCAL_USER, JSON.stringify({ ...payload }))
+      state.data = { ...payload.data }
+      setData(LOCAL_USER, JSON.stringify({ ...payload.data }))
     })
   }
 });

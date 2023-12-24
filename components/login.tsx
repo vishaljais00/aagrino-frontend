@@ -31,15 +31,12 @@ const Login: React.FC = () => {
   const onSubmit = async (userdata: UserForm) => {
     try {
       await loginUser(userdata);
-      console.log("res", isLoading, isError, isSuccess);
       
       if(isError && error){
-        console.log("JSS log aaa:",error);
         dispatch(userFailure(error as IerrorFormat))
       }
       
     } catch (errors: any) {
-      console.log("JSS log error:", { errors });
      
       setError("email", {
         type: "manual",
@@ -51,7 +48,6 @@ const Login: React.FC = () => {
   useEffect(() => {
     // Reset API error when userData.error changes
     if (userData.error) {
-      console.log("errro coocured");
       
       setError("email", {
         type: "manual",

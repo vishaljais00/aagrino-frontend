@@ -1,9 +1,10 @@
-import { BASEURL } from '@/app/constants';
-import { UserForm } from '@/app/constants/interface';
+;
 import { RootState, AppDispatch } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
 import { userSuccess } from './userSlice';
+import { BASEURL } from '@/constants';
+import { UserForm } from '@/constants/interface';
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',
@@ -31,6 +32,7 @@ export const userAuthApi = createApi({
     }),
     userProfile: builder.query({
       query: () => ({ url: `user` }),
+      keepUnusedDataFor: 3
     })
   }),
 
