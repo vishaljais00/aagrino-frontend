@@ -1,5 +1,5 @@
-import { BASEURL } from '@/app/constants';
-import { UserForm, UserSignupForm } from '@/app/constants/interface';
+import { BASEURL } from '@/constants';
+import { UserForm, UserSignupForm } from '@/constants/interface';
 import { RootState, AppDispatch } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
