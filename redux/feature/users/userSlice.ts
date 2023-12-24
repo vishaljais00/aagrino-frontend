@@ -46,7 +46,7 @@ export const signInWithGoogle = createAsyncThunk(
         console.log("currentUser",currentUser)
         const res = await axios.post(`${BASEURL}auth/signup`, currentUser)
         console.log("res google", res)
-        // thunkAPI.dispatch(userSuccess(res.data.data))
+        thunkAPI.dispatch(userSuccess(res.data.data))
         toast.success("User login successfully")
       } catch (error) {
           console.log("error google", error)
