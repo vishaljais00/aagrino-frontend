@@ -41,6 +41,16 @@ export interface UserForm {
   password: string;
 }
 
+export interface UserSignupForm {
+  name: string;
+  email: string;
+  password: string;
+  profilePic?: string;
+  withGoogle?: boolean;
+
+
+}
+
 export interface IuserData {
   data: UserState | null;
   loading: boolean;

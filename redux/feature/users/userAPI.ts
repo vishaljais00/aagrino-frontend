@@ -1,9 +1,10 @@
 import { BASEURL } from '@/app/constants';
-import { UserForm } from '@/app/constants/interface';
+import { UserForm, UserSignupForm } from '@/app/constants/interface';
 import { RootState, AppDispatch } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
 import { userSuccess } from './userSlice';
+import { toast } from 'react-toastify';
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',
@@ -28,6 +29,41 @@ export const userAuthApi = createApi({
         method: 'POST',
         body: userData,
       }),
+
+      transformResponse: (_response: {status: number , data: any, message: string}) => {
+        console.log(_response)
+        toast.success(_response.message)
+        return _response.data
+      
+      },
+      // Pick out error and prevent nested properties in a hook or selector
+      transformErrorResponse: (_response: {status: number , data: {message: string} }) => {
+        toast.error(_response.data.message)
+        return _response.data.message
+      }
+
+    }),
+
+    userSignup: builder.mutation({
+      query: (userData: UserSignupForm) => ({
+        url: `auth/signup`,
+        method: 'POST',
+        body: userData,
+      }),
+
+      transformResponse: (_response: {status: number , data: any, message: string}) => {
+        console.log("_response success", _response)
+        toast.success(_response.message)
+        return _response.data
+      
+      },
+      // Pick out error and prevent nested properties in a hook or selector
+      transformErrorResponse: (_response: {status: number ,data: any, message: string }) => {
+        console.log("_response error", _response)
+        toast.error("invaid mail or username")
+        return _response.message
+      }
+
     }),
     userProfile: builder.query({
       query: () => ({ url: `user` }),
@@ -36,4 +72,4 @@ export const userAuthApi = createApi({
 
 });
 
-export const { useUserAuthMutation, useUserProfileQuery } = userAuthApi;
+export const { useUserAuthMutation, useUserProfileQuery , useUserSignupMutation } = userAuthApi;

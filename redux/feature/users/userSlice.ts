@@ -11,7 +11,6 @@ const cookies = new Cookies();
 
 import { userAuthApi } from './userAPI';
 const AgData = getData(LOCAL_USER)
-console.log("AgData",AgData)
 const initialState: IuserData = {
   data: AgData !== null ? JSON.parse(AgData) : null,
   loading: false,
@@ -21,23 +20,41 @@ const initialState: IuserData = {
 export const signInWithGoogle = createAsyncThunk(
   "user/signInWithGoogle",
   async (arg, thunkAPI) => {
+    
     const provider = new GoogleAuthProvider();
+    let currentUser = null
     await signInWithPopup(auth, provider)
       .then((res) => {
-        const currentUser = {
-          username: res.user.displayName,
+        currentUser = {
+          name: res.user.displayName,
           email: res.user.email,
-          pic: res.user.photoURL,
-          token: null,
+          password: res.user.uid,
+          profilePic: res.user.photoURL,
           withGoogle: true,
-          password: res.user.uid
         }
-        thunkAPI.dispatch(userSuccess(currentUser));
       }).catch((err) => {
       }).catch((err) => {
         thunkAPI.dispatch(userFailure(err.message));
       })
-  }
+
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+        console.log("currentUser",currentUser)
+        const res = await axios.post(`${BASEURL}auth/signup`, currentUser)
+        console.log("res google", res)
+        // thunkAPI.dispatch(userSuccess(res.data.data))
+        toast.success("User login successfully")
+      } catch (error) {
+          console.log("error google", error)
+      }
+     
+
+
+    }
 )
 
 export const signinmanually = createAsyncThunk(
@@ -98,6 +115,8 @@ const userSlice = createSlice({
     userSuccess: (state, action: PayloadAction<UserState>) => {
       state.data = action.payload;
       state.loading = false;
+      state.error = null;
+      setData(LOCAL_USER, JSON.stringify({ ...action.payload }))
     },
     userFailure: (state, action: PayloadAction<IerrorFormat>) => {
       state.data = null;
@@ -115,9 +134,27 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
-      state.data = { ...payload }
+      state.data = { ...payload}
       setData(LOCAL_USER, JSON.stringify({ ...payload }))
     })
+    .addMatcher(userAuthApi.endpoints.userAuth.matchRejected, (state, { payload }) => {
+      if(typeof(payload) == 'string'){
+        state.error = payload;
+        state.data = null
+      }
+    })
+
+    builder.addMatcher(userAuthApi.endpoints.userSignup.matchFulfilled, (state, { payload }) => {
+      state.data = { ...payload}
+      setData(LOCAL_USER, JSON.stringify({ ...payload }))
+    })
+    .addMatcher(userAuthApi.endpoints.userSignup.matchRejected, (state, { payload }) => {
+      if(typeof(payload) == 'string'){
+        state.error = payload;
+        state.data = null
+      }
+    })
+    
   }
 });
 

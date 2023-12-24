@@ -2,11 +2,11 @@
 
 import { useUserAuthMutation } from "@/redux/feature/users/userAPI";
 import { RootState } from "@/redux/store";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect} from "react";
+import {useSelector} from "react-redux";
 import { useForm } from "react-hook-form";
-import { IerrorFormat, UserForm } from "../constants/interface";
-import { userFailure } from "@/redux/feature/users/userSlice";
+import {UserForm } from "../constants/interface";
+// import { isSerializedError } from '@reduxjs/toolkit/query/react';
 
 type FormValues = {
   password: string;
@@ -14,7 +14,6 @@ type FormValues = {
 };
 
 const Login: React.FC = () => {
-  const dispatch  = useDispatch()
   const userData = useSelector((state: RootState) => state.user);
   const [loginUser, { isLoading, isError, isSuccess, error }] =
     useUserAuthMutation();
@@ -23,21 +22,14 @@ const Login: React.FC = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<FormValues>();
 
-  
+
  
   const onSubmit = async (userdata: UserForm) => {
     try {
-      await loginUser(userdata);
-      console.log("res", isLoading, isError, isSuccess);
-      
-      if(isError && error){
-        console.log("JSS log aaa:",error);
-        dispatch(userFailure(error as IerrorFormat))
-      }
-      
+      const res = await loginUser(userdata);
     } catch (errors: any) {
       console.log("JSS log error:", { errors });
      
@@ -51,8 +43,6 @@ const Login: React.FC = () => {
   useEffect(() => {
     // Reset API error when userData.error changes
     if (userData.error) {
-      console.log("errro coocured");
-      
       setError("email", {
         type: "manual",
         message: userData.error, // Reset the API error message
@@ -79,7 +69,7 @@ const Login: React.FC = () => {
             id="email"
             className="mt-1 p-2 w-full border rounded-md"
             placeholder="john.doe@example.com"
-            {...register("email")}
+            {...register("email", {})}
             required
           />
         </div>
