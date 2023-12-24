@@ -47,8 +47,6 @@ export interface UserSignupForm {
   password: string;
   profilePic?: string;
   withGoogle?: boolean;
-
-
 }
 
 export interface IuserData {

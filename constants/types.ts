@@ -1,14 +1,20 @@
 export type IAddress = {
   name: string;
   fullAddress: string;
-  pincode: string;
+  pincode: number;
   isDefault: boolean;
 };
 
 export type UserProfileValues = {
   password: string;
-  Email: string;
-  Name: string;
-  MobileNumber: number;
+  email: string;
+  name: string;
+  phNumber: number;
   addresses: IAddress[];
 };
+export type profileData = {
+  email: string,
+  name: string,
+  phNumber: number,
+  password?: string
+}

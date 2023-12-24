@@ -1,20 +1,22 @@
 "use client";
+import IconLabelButtons from "@/components/AddButton/AddButton";
 import RoundImage from "@/components/Image/RoundImage";
 import BasicTabs from "@/components/profileTab/profileTab";
-import { IAddress } from "@/constants/types";
 import WithUser from "@/hoc/withUser";
-import { useUserProfileQuery } from "@/redux/feature/users/userAPI";
 import { RootState } from "@/redux/store";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
   const userData = useSelector((state: RootState) => state?.user.data);
   return (
     <>
-      <div className="mx-auto max-w-270 flex w-2/4">
+      <div className="mx-auto flex w-2/4">
         <BasicTabs />
-        <RoundImage alt="profile Images" src={userData?.pic || ""} />
+        <div className="m-9">
+          <RoundImage alt="profile Images" src={userData?.pic || ""} />
+          
+        </div>
       </div>
     </>
   );

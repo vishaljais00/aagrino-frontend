@@ -6,6 +6,8 @@ import { CustomTabPanel } from "./customTab";
 import { IAddress } from "@/constants/types";
 import { AddressComponent } from "../UserAddress/userAddress";
 import ProfileForm from "../Form/profileForm";
+import BasicModal from "../Modal/addAdress";
+import { useUserProfileQuery } from "@/redux/feature/users/userAPI";
 
 function a11yProps(index: number) {
   return {
@@ -16,13 +18,14 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+  const { data: userData, isSuccess } = useUserProfileQuery(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const [myAddrress, setMyAddrress] = useState<IAddress[]>([]);
+  const [open, setOpen] = React.useState(false);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "60%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -36,13 +39,17 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ProfileForm address={setMyAddrress} />
+        <ProfileForm userData={userData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <h1 className="text-2xl font-bold mb-4">User Addresses</h1>
-        {myAddrress.map((address: IAddress, index: number) => (
-          <AddressComponent key={index} address={address} />
-        ))}
+        {userData?.data?.profile?.addresses.map(
+          (address: IAddress, index: number) => (
+            <AddressComponent key={index} address={address} />
+          )
+        )}
+
+        <BasicModal setOpen={setOpen} open={open} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Item Three
