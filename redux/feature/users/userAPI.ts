@@ -67,6 +67,7 @@ export const userAuthApi = createApi({
     }),
     userProfile: builder.query({
       query: () => ({ url: `user` }),
+      keepUnusedDataFor: 3
     })
   }),
 

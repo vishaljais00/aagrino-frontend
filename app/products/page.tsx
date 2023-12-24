@@ -1,8 +1,8 @@
 "use client";
 import { useGetAllProductsQuery } from "@/redux/feature/products/productAPI";
 import React from "react";
-import { IProduct } from "../constants/interface";
 import Link from "next/link";
+import { IProduct } from "../../constants/interface";
 
 const Product = () => {
   const { data, error, isLoading } = useGetAllProductsQuery("bulbasaur");

@@ -31,7 +31,6 @@ const Login: React.FC = () => {
     try {
       const res = await loginUser(userdata);
     } catch (errors: any) {
-      console.log("JSS log error:", { errors });
      
       setError("email", {
         type: "manual",

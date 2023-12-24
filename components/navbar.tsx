@@ -1,9 +1,16 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import AccountMenu from "./accountMenu";
-import { redirect } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 const Navbar: React.FC = () => {
+  const userData = useSelector((state: RootState) => state?.user?.data);
+  const router = useRouter();
+
   return (
     <nav className="flex justify-between px-20 py-10 items-center bg-white">
       <h1 className="text-xl text-gray-800 font-bold">HotCoffee</h1>
@@ -32,7 +39,9 @@ const Navbar: React.FC = () => {
           />
         </div>
         <ul className="flex items-center space-x-6">
-          <li onClick={()=>{redirect('/')}} className="font-semibold text-gray-700">Home</li>
+          <Link href={"/"}>
+            <li className="font-semibold text-gray-700">Home</li>
+          </Link>
           <li className="font-semibold text-gray-700">Articles</li>
           <li>
             <svg
@@ -84,7 +93,13 @@ const Navbar: React.FC = () => {
               />
             </svg>
           </li>
-          <AccountMenu/>
+          {userData ? (
+            <AccountMenu />
+          ) : (
+            <Button onClick={() => router?.push("/auth")} color="inherit">
+              Login
+            </Button>
+          )}
         </ul>
       </div>
     </nav>
