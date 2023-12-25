@@ -5,7 +5,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { toast } from 'react-toastify';
 import { IAddress, profileData } from '@/constants/types';
 import { EStatusMessage } from '@/constants/enums';
-import { SetLoading } from '@/hooks';
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',

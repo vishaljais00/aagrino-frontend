@@ -1,7 +1,8 @@
 import { IAddress } from "@/constants/types";
-import { SetLoading } from "@/hooks";
+import { setLoader } from "@/redux/feature/loader/loaderSlice";
 import { useUserAddressMutation } from "@/redux/feature/users/userAPI";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 const AddressForm = (props: { handleClose: Function }) => {
   const {
@@ -9,14 +10,15 @@ const AddressForm = (props: { handleClose: Function }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IAddress>();
+  const dispatch = useDispatch(); 
 
   const [addUserAddress] = useUserAddressMutation();
 
   const onSubmit = (data: IAddress) => {
     props.handleClose();
-    SetLoading(true);
+    dispatch(setLoader(true));
     addUserAddress({ ...data, pincode: +data.pincode });
-    SetLoading(false);
+    dispatch(setLoader(false));
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

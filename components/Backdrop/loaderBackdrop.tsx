@@ -4,12 +4,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { SetLoading } from "@/hooks";
+import { setLoader } from "@/redux/feature/loader/loaderSlice";
 
 export default function SimpleBackdrop() {
   const isLoading = useSelector((state: RootState) => state.loader.isLoading);
+  const dispatch = useDispatch();
   const handleClose = () => {
-    SetLoading(false)
+    dispatch(setLoader(true));
   };
   return (
     <div>
