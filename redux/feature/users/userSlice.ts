@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 
 
 import { userAuthApi } from './userAPI';
-import { SetLoading } from '@/hooks';
 // const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
   // data: AgData !== null ? JSON.parse(AgData) : null,
@@ -157,10 +156,10 @@ const userSlice = createSlice({
       })
 
     builder.addMatcher(userAuthApi.endpoints.userAddress.matchFulfilled, (state, { payload }) => {
-      SetLoading(false)
+      // toast.success("payload.")
     })
       .addMatcher(userAuthApi.endpoints.userSignup.matchPending, (state, { payload }) => {
-        SetLoading(true)
+        // SetLoading(true)
       })
 
 
