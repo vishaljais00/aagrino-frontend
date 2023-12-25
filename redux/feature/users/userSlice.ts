@@ -11,8 +11,8 @@ import { useUserAddressMutation, userAuthApi } from './userAPI';
 import { SetLoading } from '@/hooks';
 const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
-  // data: AgData !== null ? JSON.parse(AgData) : null,
-  data: null,
+  data: AgData !== null ? JSON.parse(AgData) : null,
+  // data: null,
   loading: false,
   error: null
 };
@@ -45,6 +45,7 @@ export const signInWithGoogle = createAsyncThunk(
         }
         const res = await axios.post(`${BASEURL}auth/signup`, currentUser)
         thunkAPI.dispatch(userSuccess(res.data.data))
+        
         toast.success("User login successfully")
       } catch (error) {
           console.log("error google", error)
@@ -143,7 +144,9 @@ const userSlice = createSlice({
     })
 
     builder.addMatcher(userAuthApi.endpoints.userSignup.matchFulfilled, (state, { payload }) => {
-      state.data = { ...payload}
+      if(typeof(payload) === 'object' && payload !== null){
+        state.data = payload || null
+      }
       setData(LOCAL_USER, JSON.stringify(payload))
     })
     .addMatcher(userAuthApi.endpoints.userSignup.matchRejected, (state, { payload }) => {
