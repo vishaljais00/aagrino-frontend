@@ -66,6 +66,11 @@ export interface IProductList {
   coverPhoto: string
   title: string
 }
+export interface IThemeList {
+  coverPhoto: string
+  title: string
+  slug: string
+}
 export interface NavProduts {
   title: string;
   label: string

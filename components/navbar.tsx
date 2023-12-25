@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import BasicDemo from "./MenuBar/MenuBar";
+import icon from "./Icon/icon.png";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const userData = useSelector((state: RootState) => state?.user?.data);
@@ -14,8 +16,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="flex justify-between px-6 py-5 items-center bg-white">
-      <h1 className="text-xl text-gray-800 font-bold">HotCoffee</h1>
-      <BasicDemo/>
+      <Image src={icon} height={40} alt="" />
+      <h1 className="text-xl text-gray-800 font-bold">Aagrino</h1>
+      <BasicDemo />
       <div className="flex items-center">
         {/* <div className="flex items-center">
           <svg
