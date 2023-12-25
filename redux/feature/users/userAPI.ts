@@ -52,6 +52,7 @@ export const userAuthApi = createApi({
       }),
 
       transformResponse: (response: { status: number, data: UserState, message: string }) => {
+        console.log(response.data, "data")
         toast.success(response.message)
         return response.data
       },

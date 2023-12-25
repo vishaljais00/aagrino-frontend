@@ -1,5 +1,5 @@
 // pages/signup.tsx
-
+"use client";
 import { useUserSignupMutation } from "@/redux/feature/users/userAPI";
 import { RootState } from "@/redux/store";
 import React, { useEffect } from "react";

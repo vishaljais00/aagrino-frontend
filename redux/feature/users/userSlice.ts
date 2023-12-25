@@ -9,10 +9,11 @@ import { toast } from 'react-toastify';
 
 import { useUserAddressMutation, userAuthApi } from './userAPI';
 import { SetLoading } from '@/hooks';
-const AgData = getData(LOCAL_USER)
+// const AgData = getData(LOCAL_USER)
+// console.log(AgData ,"AgData")
 const initialState: IuserData = {
-  data: AgData !== null ? JSON.parse(AgData) : null,
-  // data: null,
+  // data: AgData != null ||AgData != undefined ? JSON.parse(AgData) : null,
+  data: null,
   loading: false,
   error: null
 };
@@ -144,9 +145,8 @@ const userSlice = createSlice({
     })
 
     builder.addMatcher(userAuthApi.endpoints.userSignup.matchFulfilled, (state, { payload }) => {
-      if(typeof(payload) === 'object' && payload !== null){
-        state.data = payload || null
-      }
+    
+      state.data = {...payload} 
       setData(LOCAL_USER, JSON.stringify(payload))
     })
     .addMatcher(userAuthApi.endpoints.userSignup.matchRejected, (state, { payload }) => {
