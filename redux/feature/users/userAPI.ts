@@ -1,5 +1,5 @@
 import { BASEURL } from '@/constants';
-import { UserForm, UserSignupForm } from '@/constants/interface';
+import { UserForm, UserSignupForm, UserState } from '@/constants/interface';
 import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { toast } from 'react-toastify';
@@ -51,12 +51,12 @@ export const userAuthApi = createApi({
         body: userData,
       }),
 
-      transformResponse: (response: { status: number, data: unknown, message: string }) => {
+      transformResponse: (response: { status: number, data: UserState, message: string }) => {
         toast.success(response.message)
         return response.data
       },
       // Pick out error and prevent nested properties in a hook or selector
-      transformErrorResponse: (response: { status: number, data: unknown, message: string }) => {
+      transformErrorResponse: (response: { status: number, data: any, message: string }) => {
         toast.error(response.message)
         return response.message
       }
