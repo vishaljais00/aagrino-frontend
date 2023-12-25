@@ -7,12 +7,12 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
 
-import { useUserAddressMutation, userAuthApi } from './userAPI';
+import { userAuthApi } from './userAPI';
 import { SetLoading } from '@/hooks';
-const AgData = getData(LOCAL_USER)
+// const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
-  data: AgData !== null ? JSON.parse(AgData) : null,
-  // data: null,
+  // data: AgData !== null ? JSON.parse(AgData) : null,
+  data: null,
   loading: false,
   error: null
 };
@@ -20,7 +20,7 @@ const initialState: IuserData = {
 export const signInWithGoogle = createAsyncThunk(
   "user/signInWithGoogle",
   async (arg, thunkAPI) => {
-    
+
     const provider = new GoogleAuthProvider();
     let currentUser = null
     await signInWithPopup(auth, provider)
@@ -37,23 +37,23 @@ export const signInWithGoogle = createAsyncThunk(
         thunkAPI.dispatch(userFailure(err.message));
       })
 
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-        const res = await axios.post(`${BASEURL}auth/signup`, currentUser)
-        thunkAPI.dispatch(userSuccess(res.data.data))
-        
-        toast.success("User login successfully")
-      } catch (error) {
-          console.log("error google", error)
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
-     
+      const res = await axios.post(`${BASEURL}auth/signup`, currentUser)
+      thunkAPI.dispatch(userSuccess(res.data.data))
 
-
+      toast.success("User login successfully")
+    } catch (error) {
+      console.log("error google", error)
     }
+
+
+
+  }
 )
 
 export const signinmanually = createAsyncThunk(
@@ -133,37 +133,37 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
-      state.data = { ...payload}
+      state.data = { ...payload }
       setData(LOCAL_USER, JSON.stringify({ ...payload }))
     })
-    .addMatcher(userAuthApi.endpoints.userAuth.matchRejected, (state, { payload }) => {
-      if(typeof(payload) == 'string'){
-        state.error = payload;
-        state.data = null
-      }
-    })
+      .addMatcher(userAuthApi.endpoints.userAuth.matchRejected, (state, { payload }) => {
+        if (typeof (payload) == 'string') {
+          state.error = payload;
+          state.data = null
+        }
+      })
 
     builder.addMatcher(userAuthApi.endpoints.userSignup.matchFulfilled, (state, { payload }) => {
-      if(typeof(payload) === 'object' && payload !== null){
+      if (typeof (payload) === 'object' && payload !== null) {
         state.data = payload || null
       }
       setData(LOCAL_USER, JSON.stringify(payload))
     })
-    .addMatcher(userAuthApi.endpoints.userSignup.matchRejected, (state, { payload }) => {
-      if(typeof(payload) == 'string'){
-        state.error = payload;
-        state.data = null
-      }
-    })    
+      .addMatcher(userAuthApi.endpoints.userSignup.matchRejected, (state, { payload }) => {
+        if (typeof (payload) == 'string') {
+          state.error = payload;
+          state.data = null
+        }
+      })
 
     builder.addMatcher(userAuthApi.endpoints.userAddress.matchFulfilled, (state, { payload }) => {
       SetLoading(false)
     })
-    .addMatcher(userAuthApi.endpoints.userSignup.matchPending, (state, { payload }) => {
-      SetLoading(true)
-    })    
+      .addMatcher(userAuthApi.endpoints.userSignup.matchPending, (state, { payload }) => {
+        SetLoading(true)
+      })
 
-    
+
   }
 });
 
