@@ -54,3 +54,26 @@ export interface IuserData {
   loading: boolean;
   error: string | null;
 }
+export interface ITheme {
+  title: string
+  slug: string
+}
+export interface ICatogary {
+  coverPhoto: string
+  title: string
+}
+export interface IProductList {
+  coverPhoto: string
+  title: string
+}
+export interface NavProduts {
+  title: string;
+  label: string
+  subCategories: {
+    title: string;
+  }[];
+  items?: {
+    title?: string;
+    label: string
+  }[]
+}
