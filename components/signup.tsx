@@ -33,7 +33,6 @@ const Signup: React.FC = () => {
             }
             await signupUser(newUserData);
         } catch (errors: any) {
-          console.log("JSS log error:", { errors });
          
           setError("email", {
             type: "manual",

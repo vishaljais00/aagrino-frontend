@@ -5,10 +5,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
-import { Cookies } from 'react-cookie';
 
 
-import { userAuthApi } from './userAPI';
+import { useUserAddressMutation, userAuthApi } from './userAPI';
+import { SetLoading } from '@/hooks';
 const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
   // data: AgData !== null ? JSON.parse(AgData) : null,
@@ -43,9 +43,7 @@ export const signInWithGoogle = createAsyncThunk(
             'Content-Type': 'application/json',
           },
         }
-        console.log("currentUser",currentUser)
         const res = await axios.post(`${BASEURL}auth/signup`, currentUser)
-        console.log("res google", res)
         thunkAPI.dispatch(userSuccess(res.data.data))
         toast.success("User login successfully")
       } catch (error) {
@@ -146,14 +144,22 @@ const userSlice = createSlice({
 
     builder.addMatcher(userAuthApi.endpoints.userSignup.matchFulfilled, (state, { payload }) => {
       state.data = { ...payload}
-      setData(LOCAL_USER, JSON.stringify({ ...payload }))
+      setData(LOCAL_USER, JSON.stringify(payload))
     })
     .addMatcher(userAuthApi.endpoints.userSignup.matchRejected, (state, { payload }) => {
       if(typeof(payload) == 'string'){
         state.error = payload;
         state.data = null
       }
+    })    
+
+    builder.addMatcher(userAuthApi.endpoints.userAddress.matchFulfilled, (state, { payload }) => {
+      SetLoading(false)
     })
+    .addMatcher(userAuthApi.endpoints.userSignup.matchPending, (state, { payload }) => {
+      SetLoading(true)
+    })    
+
     
   }
 });

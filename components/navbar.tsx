@@ -6,16 +6,21 @@ import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import BasicDemo from "./MenuBar/MenuBar";
+import icon from "./Icon/icon.png";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const userData = useSelector((state: RootState) => state?.user?.data);
   const router = useRouter();
 
   return (
-    <nav className="flex justify-between px-20 py-10 items-center bg-white">
-      <h1 className="text-xl text-gray-800 font-bold">HotCoffee</h1>
+    <nav className="flex justify-between px-6 py-5 items-center bg-white">
+      <Image src={icon} height={40} alt="" />
+      <h1 className="text-xl text-gray-800 font-bold">Aagrino</h1>
+      <BasicDemo />
       <div className="flex items-center">
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 pt-0.5 text-gray-600"
@@ -37,7 +42,7 @@ const Navbar: React.FC = () => {
             id="search"
             placeholder="Search..."
           />
-        </div>
+        </div> */}
         <ul className="flex items-center space-x-6">
           <Link href={"/"}>
             <li className="font-semibold text-gray-700">Home</li>

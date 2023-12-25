@@ -1,10 +1,11 @@
 import { BASEURL } from '@/constants';
 import { UserForm, UserSignupForm } from '@/constants/interface';
-import { RootState, AppDispatch } from '@/redux/store';
+import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { useSelector } from 'react-redux';
-import { userSuccess } from './userSlice';
 import { toast } from 'react-toastify';
+import { IAddress, profileData } from '@/constants/types';
+import { EStatusMessage } from '@/constants/enums';
+import { SetLoading } from '@/hooks';
 
 export const userAuthApi = createApi({
   reducerPath: 'authApi',
@@ -22,6 +23,7 @@ export const userAuthApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['profileUpdate'],
   endpoints: (builder) => ({
     userAuth: builder.mutation({
       query: (userData: UserForm) => ({
@@ -30,14 +32,12 @@ export const userAuthApi = createApi({
         body: userData,
       }),
 
-      transformResponse: (_response: {status: number , data: any, message: string}) => {
-        console.log(_response)
+      transformResponse: (_response: { status: number, data: any, message: string }) => {
         toast.success(_response.message)
         return _response.data
-      
       },
       // Pick out error and prevent nested properties in a hook or selector
-      transformErrorResponse: (_response: {status: number , data: {message: string} }) => {
+      transformErrorResponse: (_response: { status: number, data: { message: string } }) => {
         toast.error(_response.data.message)
         return _response.data.message
       }
@@ -51,26 +51,58 @@ export const userAuthApi = createApi({
         body: userData,
       }),
 
-      transformResponse: (_response: {status: number , data: any, message: string}) => {
-        console.log("_response success", _response)
-        toast.success(_response.message)
-        return _response.data
-      
+      transformResponse: (response: { status: number, data: unknown, message: string }) => {
+        toast.success(response.message)
+        return response.data
       },
       // Pick out error and prevent nested properties in a hook or selector
-      transformErrorResponse: (_response: {status: number ,data: any, message: string }) => {
-        console.log("_response error", _response)
-        toast.error("invaid mail or username")
-        return _response.message
+      transformErrorResponse: (response: { status: number, data: unknown, message: string }) => {
+        toast.error(response.message)
+        return response.message
       }
 
     }),
     userProfile: builder.query({
       query: () => ({ url: `user` }),
-      keepUnusedDataFor: 3
-    })
+      providesTags: ['profileUpdate'],
+    }),
+
+    userAddress: builder.mutation({
+      query: (userAddress: IAddress) => ({
+        url: `user/addaddress`,
+        method: 'POST',
+        body: userAddress,
+      }),
+
+      transformResponse: (response: { status: number, message: string }) => {
+        toast.success(response.message)
+        if (response.message === EStatusMessage.success) {
+          return true
+        }
+        return false
+      },
+      invalidatesTags: ['profileUpdate'],
+    }),
+    updateProfile: builder.mutation({
+      query: (profileData: UserSignupForm) => {
+        console.log('JSS log :', { profileData })
+        return ({
+          url: `user`,
+          method: 'PATCH',
+          body: profileData,
+        })
+      },
+
+      transformResponse: (response: { status: number, message: string }) => {
+        toast.success(response.message)
+        if (response.message === EStatusMessage.success) {
+          return true
+        }
+        return false
+      },
+    }),
   }),
 
 });
 
-export const { useUserAuthMutation, useUserProfileQuery , useUserSignupMutation } = userAuthApi;
+export const { useUserAuthMutation, useUserProfileQuery, useUserSignupMutation, useUserAddressMutation, useLazyUserProfileQuery, useUpdateProfileMutation } = userAuthApi;

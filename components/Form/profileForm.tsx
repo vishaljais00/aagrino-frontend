@@ -1,9 +1,17 @@
 import { UserProfileValues } from "@/constants/types";
-import { useUserProfileQuery } from "@/redux/feature/users/userAPI";
+import { useUpdateProfileMutation } from "@/redux/feature/users/userAPI";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const ProfileForm = (props: { address: Function }) => {
+const ProfileForm = (props: {
+  userData: {
+    data: {
+      name: string;
+      email: string;
+      profile: { phNumber: number; addresses: string };
+    };
+  };
+}) => {
   const {
     register,
     handleSubmit,
@@ -12,52 +20,48 @@ const ProfileForm = (props: { address: Function }) => {
     setValue,
   } = useForm<UserProfileValues>();
 
-  const { data: userData, isSuccess } = useUserProfileQuery(0);
-
+  const [signupUser] = useUpdateProfileMutation();
   useEffect(() => {
-    if (isSuccess && userData) {
-      console.log("JSS log Insider :", { isSuccess, userData });
-      setValue("Name", userData.data.name || "");
-      setValue("Email", userData.data.email || "");
-      setValue("MobileNumber", userData.data.profile.phNumber || "");
-      props.address(userData.data.profile.addresses);
+    if (props.userData) {
+      setValue("name", props.userData.data.name || "");
+      setValue("email", props.userData.data.email || "");
+      setValue("phNumber", props.userData.data.profile.phNumber || 0);
     }
-  }, [isSuccess, userData, setValue]);
+  }, [props.userData, setValue]);
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    // Handle form submission logic here
+    signupUser(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex flex-col mb-4">
-        <label htmlFor="Name" className="text-lg font-semibold mb-1">
+        <label htmlFor="name" className="text-lg font-semibold mb-1">
           Name
         </label>
         <input
           type="text"
-          {...register("Name")}
+          {...register("name")}
           className="border rounded-md p-2"
         />
       </div>
       <div className="flex flex-col mb-4">
-        <label htmlFor="Email" className="text-lg font-semibold mb-1">
+        <label htmlFor="email" className="text-lg font-semibold mb-1">
           Email
         </label>
         <input
           type="text"
-          {...register("Email")}
+          {...register("email")}
           className="border rounded-md p-2"
         />
       </div>
       <div className="flex flex-col mb-4">
-        <label htmlFor="MobileNumber" className="text-lg font-semibold mb-1">
+        <label htmlFor="phNumber" className="text-lg font-semibold mb-1">
           Mobile Number
         </label>
         <input
           type="text"
-          {...register("MobileNumber")}
+          {...register("phNumber")}
           className="border rounded-md p-2"
         />
       </div>

@@ -47,12 +47,38 @@ export interface UserSignupForm {
   password: string;
   profilePic?: string;
   withGoogle?: boolean;
-
-
 }
 
 export interface IuserData {
   data: UserState | null;
   loading: boolean;
   error: string | null;
+}
+export interface ITheme {
+  title: string
+  slug: string
+}
+export interface ICatogary {
+  coverPhoto: string
+  title: string
+}
+export interface IProductList {
+  coverPhoto: string
+  title: string
+}
+export interface IThemeList {
+  coverPhoto: string
+  title: string
+  slug: string
+}
+export interface NavProduts {
+  title: string;
+  label: string
+  subCategories: {
+    title: string;
+  }[];
+  items?: {
+    title?: string;
+    label: string
+  }[]
 }
