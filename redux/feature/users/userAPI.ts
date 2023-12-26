@@ -84,7 +84,6 @@ export const userAuthApi = createApi({
     }),
     updateProfile: builder.mutation({
       query: (profileData: UserSignupForm) => {
-        console.log('JSS log :', { profileData })
         return ({
           url: `user`,
           method: 'PATCH',

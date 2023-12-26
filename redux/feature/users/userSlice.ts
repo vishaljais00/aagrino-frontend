@@ -11,7 +11,10 @@ import { userAuthApi } from './userAPI';
 // const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
   // data: AgData !== null ? JSON.parse(AgData) : null,
-  data: null,
+  data: {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI4LCJpYXQiOjE3MDM1MzM5NjksImV4cCI6MTcwNDEzODc2OX0.biwPQffWC-eSYM-wKJOor-bKWLfofWtRpgddDRItJJ0", "username": "New Name", "email": "deleted@gmial.com", "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"
+  },
+  // data:null,
   loading: false,
   error: null
 };

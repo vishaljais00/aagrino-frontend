@@ -1,5 +1,4 @@
 "use client";
-import IconLabelButtons from "@/components/AddButton/AddButton";
 import RoundImage from "@/components/Image/RoundImage";
 import BasicTabs from "@/components/profileTab/profileTab";
 import WithUser from "@/hoc/withUser";

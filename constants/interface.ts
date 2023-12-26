@@ -70,6 +70,8 @@ export interface IThemeList {
   coverPhoto: string
   title: string
   slug: string
+  name: string
+  coverImage: string
 }
 export interface NavProduts {
   title: string;
@@ -81,4 +83,16 @@ export interface NavProduts {
     title?: string;
     label: string
   }[]
+}
+
+export interface ICoupons {
+  id: number;
+  code: string;
+  minOrder: number;
+  disAmount: number;
+  active: boolean;
+  usuage: number;
+  validFrom: string;
+  validTill: string;
+  createdAt: string;
 }
