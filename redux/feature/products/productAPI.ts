@@ -10,7 +10,7 @@ export const productsApi = createApi({
       query: () => ``,
     }),
     getProductBySlug: builder.query({
-      query: (slug: string) => `${`product` + slug}`
+      query: (slug: string) => `${`product/` + slug}`
     }),
     getThemes: builder.query({
       query: () => `themes`

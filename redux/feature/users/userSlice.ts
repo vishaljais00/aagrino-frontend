@@ -7,12 +7,16 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
 
-import { useUserAddressMutation, userAuthApi } from './userAPI';
-import { SetLoading } from '@/hooks';
-const AgData = getData(LOCAL_USER)
+import { userAuthApi } from './userAPI';
+// const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
-  data: AgData !== null ? JSON.parse(AgData) : null,
-  // data: null,
+  // data: AgData !== null ? JSON.parse(AgData) : null,
+  data:  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI4LCJpYXQiOjE3MDM1MjI0MzMsImV4cCI6MTcwNDEyNzIzM30.1JjwQcN4yOgikqZh94COmwBhFuY-QxScysgpiBOfzzg",
+    "username": "vishal jaisaa",
+    "email": "vishal@gmail.com",
+    "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"
+  },
   loading: false,
   error: null
 };
@@ -144,7 +148,7 @@ const userSlice = createSlice({
       })
 
     builder.addMatcher(userAuthApi.endpoints.userSignup.matchFulfilled, (state, { payload }) => {
-      if(typeof(payload) === 'object' && payload !== null){
+      if (typeof (payload) === 'object' && payload !== null) {
         state.data = payload || null
       }
       setData(LOCAL_USER, JSON.stringify(payload))
