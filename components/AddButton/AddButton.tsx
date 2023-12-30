@@ -1,11 +1,26 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Add from "@mui/icons-material/Add";
+import AddIcon from "@mui/icons-material/Add";
+import Edit from "@mui/icons-material/Edit";
 
-export default function IconLabelButtons() {
+interface IconLabelButtonsProps {
+  title: string;
+  onClickFun: () => void;
+}
+
+const IconLabelButtons: React.FC<IconLabelButtonsProps> = ({
+  title,
+  onClickFun,
+}: IconLabelButtonsProps) => {
   return (
-    <Button variant="outlined" endIcon={<Add />}>
-      Add Address
+    <Button
+      variant="outlined"
+      onClick={onClickFun}
+      endIcon={<AddIcon />}
+    >
+      {title}
     </Button>
   );
-}
+};
+
+export default IconLabelButtons;

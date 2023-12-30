@@ -1,10 +1,7 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import AddressForm from "../Form/addAdress";
 import IconLabelButtons from "../AddButton/AddButton";
+import AddressForm from "../Form/addAdress";
 
 const style = {
   position: "absolute" as "absolute",
@@ -25,9 +22,7 @@ const BasicModal = (props: { setOpen: Function; open: boolean }) => {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <IconLabelButtons />
-      </Button>
+        <IconLabelButtons onClickFun={handleOpen} title="Add Address " />
       <Modal
         open={open}
         onClose={handleClose}
