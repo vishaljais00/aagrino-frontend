@@ -1,8 +1,17 @@
-import { setLoader } from "@/redux/feature/loader/loaderSlice";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
+export const useDebounce = (val: string, delay: number) => {
+  const [debounceVal, setDebounceVal] = useState(val);
 
-const SetLoading = (loading: boolean = false) => {
-  const dispatch = useDispatch(); // Move useDispatch inside the function
-  dispatch(setLoader(loading));
-};
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounceVal(val);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    }
+  }, [val]);
+
+  return debounceVal;
+}

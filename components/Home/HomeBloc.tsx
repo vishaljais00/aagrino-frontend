@@ -1,79 +1,58 @@
 "use client";
-import React from "react";
-import CatogaryBloc from "./CatogaryBloc";
-import { IProductList, IThemeList } from "@/constants/interface";
-import { Typography } from "@mui/material";
+import { IThemeList } from "@/constants/interface";
 import { useGetHomeDataQuery } from "@/redux/feature/homePage/homePage";
+import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import CatogaryBloc from "./CatogaryBloc";
 
 const HomeBloc = () => {
   const { data, isSuccess } = useGetHomeDataQuery(0);
+  const [renderData, setrenderData] = useState([]);
+  useEffect(() => {
+    if (isSuccess) {
+      setrenderData(Object.keys(data) as []);
+    }
+  }, [data, isSuccess]);
+
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-2 mx-auto">
-        <Typography variant="h3" className="my-8" align="center">
-          Shop By Catogary
-        </Typography>
-        {data?.data?.allCategories?.length > 0 ? (
-          <>
-            <div className="flex flex-wrap -m-4">
-              {data?.data?.themes?.map((item: IThemeList, index: number) => {
-                return (
-                  <CatogaryBloc
-                    title={item.title}
-                    coverPhoto={item.coverPhoto}
-                    key={item.slug}
-                  />
-                );
-              })}
+    <>
+      {renderData.map((item: any) => {
+        return (
+          <section key={item.as} className="text-gray-600 body-font">
+            <div className="container px-5 py-2 mx-auto">
+              <Typography variant="h3" className="my-8" align="center">
+                {data[item].as}
+              </Typography>
+              {data[item].data.length > 0 ? (
+                <>
+                  <div className="flex flex-wrap -m-4">
+                    {data[item].data?.map(
+                      (innerItem: IThemeList, index: number) => {
+                        if (!innerItem.coverImage) {
+                          console.log("JSS log :", { innerItem });
+                        }
+                        return (
+                          <CatogaryBloc
+                            title={innerItem.title}
+                            coverPhoto={
+                              innerItem?.coverPhoto ||
+                              "https://wallpapers.com/images/hd/dragon-ball-super-pictures-8l3x3v4ngyftb07f.jpg"
+                            }
+                            key={innerItem.slug}
+                          />
+                        );
+                      }
+                    )}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
-      {data?.data?.themes?.length > 0 ? (
-        <>
-          {" "}
-          <Typography variant="h3" className="my-8" align="center">
-            Shop By Themes
-          </Typography>
-          <div className="flex flex-wrap -m-4">
-            {data?.data?.themes?.map((item: IThemeList, index: number) => {
-              return (
-                <CatogaryBloc
-                  title={item.title}
-                  coverPhoto={item.coverPhoto}
-                  key={item.slug}
-                />
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-      {data?.data?.newArrivals?.length > 0 ? (
-        <>
-          {" "}
-          <Typography variant="h3" className="my-8" align="center">
-            New Arrivals
-          </Typography>
-          <div className="flex flex-wrap -m-4">
-            {data?.data?.newArrivals?.map((item: IThemeList, index: number) => {
-              return (
-                <CatogaryBloc
-                  title={item.name}
-                  coverPhoto={item.coverImage}
-                  key={item.slug}
-                />
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-    </section>
+          </section>
+        );
+      })}
+    </>
   );
 };
 
