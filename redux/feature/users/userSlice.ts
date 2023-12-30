@@ -12,9 +12,9 @@ import { userAuthApi } from './userAPI';
 const initialState: IuserData = {
   // data: AgData !== null ? JSON.parse(AgData) : null,
   data:  {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI4LCJpYXQiOjE3MDM1MjI0MzMsImV4cCI6MTcwNDEyNzIzM30.1JjwQcN4yOgikqZh94COmwBhFuY-QxScysgpiBOfzzg",
-    "username": "vishal jaisaa",
-    "email": "vishal@gmail.com",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwMzkyMTczOCwiZXhwIjoxNzA0NTI2NTM4fQ.o5CgbYVt2WjBIDqVDMWhdDbsxmd9TRH2SvGprdxz8c4",
+    "username": "Dev Gohari",
+    "email": "deleted@gmial.com",
     "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"
   },
   loading: false,

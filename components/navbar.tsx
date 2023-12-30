@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
     <nav className="flex justify-between px-6 py-5 items-center bg-white">
       <Image src={icon} height={40} alt="" />
       <h1 className="text-xl text-gray-800 font-bold">Aagrino</h1>
-      {/* <BasicDemo /> */}
+      <BasicDemo />
       <div className="flex items-center">
         <ul className="flex items-center space-x-6">
 
