@@ -55,8 +55,11 @@ export const adminApi = createApi({
         return _response.data
       },
     }),
+    getHomePage: builder.query({
+      query: () => ``,
+    }),
   }),
 
 });
 
-export const { useGetCatogaryQuery, useAddCatogaryMutation, useUpdateCatogaryMutation, useGetTagsQuery, useGetThemesQuery } = adminApi;
+export const { useGetCatogaryQuery, useAddCatogaryMutation, useUpdateCatogaryMutation, useGetTagsQuery, useGetThemesQuery, useGetHomePageQuery } = adminApi;

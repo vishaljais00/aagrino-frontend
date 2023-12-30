@@ -1,18 +1,29 @@
 "use client";
-import React, { useEffect } from "react";
-import AccountMenu from "./accountMenu";
-import Link from "next/link";
-import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDebounce } from "@/hooks";
+import { useSearchProductsMutation } from "@/redux/feature/products/productAPI";
 import { RootState } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import BasicDemo from "./MenuBar/MenuBar";
-import icon from "./Icon/icon.png";
+import { Button } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import icon from "./Icon/icon.png";
+import BasicDemo from "./MenuBar/MenuBar";
+import AccountMenu from "./accountMenu";
 
 const Navbar: React.FC = () => {
   const userData = useSelector((state: RootState) => state?.user?.data);
   const router = useRouter();
+  const [searchValue, setsearchValue] = useState<string>("");
+  const debounce = useDebounce(searchValue, 500);
+  const [trigger, { isSuccess, status, data }] = useSearchProductsMutation();
+
+  useEffect(() => {
+    if (searchValue && isSuccess) {
+      trigger({ inputData: searchValue });
+    }
+  }, [debounce]);
 
   return (
     <nav className="flex justify-between px-6 py-5 items-center bg-white">
@@ -20,6 +31,32 @@ const Navbar: React.FC = () => {
       <h1 className="text-xl text-gray-800 font-bold">Aagrino</h1>
       <BasicDemo />
       <div className="flex items-center">
+        <div className="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 pt-0.5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          <input
+            className="ml-2 outline-none bg-transparent font-"
+            type="text"
+            name="search"
+            onChange={(e) => {
+              setsearchValue(e.target.value);
+            }}
+            id="search"
+            placeholder="Search..."
+          />
+        </div>
         <ul className="flex items-center space-x-6">
 
           <li>

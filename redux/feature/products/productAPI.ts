@@ -39,8 +39,15 @@ export const productsApi = createApi({
         return transformedData;
       },
     }),
+    searchProducts: builder.mutation({
+      query: (searchData: { inputData: string }) => ({
+        url: ``,
+        method: 'POST',
+        body: searchData,
+      }),
+    }),
   }),
 
 });
 
-export const { useGetAllProductsQuery, useGetProductBySlugQuery, useGetCategoryQuery, useGetThemesQuery, useGetCategoryAllQuery, useGetCategoryNavQuery } = productsApi;
+export const { useGetAllProductsQuery, useGetProductBySlugQuery, useGetCategoryQuery, useGetThemesQuery, useGetCategoryAllQuery, useGetCategoryNavQuery, useSearchProductsMutation } = productsApi;

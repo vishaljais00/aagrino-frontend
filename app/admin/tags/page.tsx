@@ -1,15 +1,14 @@
 "use client";
 import CategoryList from "@/components/Catogary/CategoryList";
 import { MyModal } from "@/components/Modal/commanModal";
-import {  useGetTagsQuery } from "@/redux/feature/admin/admin";
-import React from "react";
+import { useGetTagsQuery } from "@/redux/feature/admin/admin";
 
 const Catogary = () => {
   const { data, error, isLoading } = useGetTagsQuery(0);
 
   return (
     <>
-      <ul className="bg-white shadow overflow-hidden sm:rounded-md ml-60">
+      <ul className="bg-white shadow overflow-hidden sm:rounded-md -ml-48">
         <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2 p-4">
           {data?.data?.map((item: { title: string; id: number }) => {
             return (

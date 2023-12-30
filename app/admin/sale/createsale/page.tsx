@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 
 const page = () => {
   return (
-    <>
+    <div className="-ml-48">
       <Typography variant="h5" className="" align="left">
         Create Sale
       </Typography>
@@ -204,7 +204,7 @@ const page = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

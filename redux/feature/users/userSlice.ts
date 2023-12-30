@@ -1,7 +1,7 @@
-import { BASEURL, LOCAL_USER, getData, removeData, setData } from '@/constants';
+import { BASEURL, LOCAL_USER, removeData, setData } from '@/constants';
 import { IerrorFormat, IuserData, UserForm, UserState } from '@/constants/interface';
 import { auth } from '@/firebase/firebase';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
@@ -11,10 +11,10 @@ import { userAuthApi } from './userAPI';
 // const AgData = getData(LOCAL_USER)
 const initialState: IuserData = {
   // data: AgData !== null ? JSON.parse(AgData) : null,
-  data:  {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwMzkyMTczOCwiZXhwIjoxNzA0NTI2NTM4fQ.o5CgbYVt2WjBIDqVDMWhdDbsxmd9TRH2SvGprdxz8c4",
+  data: {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwMzgzNzcyMiwiZXhwIjoxNzA0NDQyNTIyfQ.8_k01t6egWST3smIq4gyJMBJMQTuPqhayxD19MSs73s",
     "username": "Dev Gohari",
-    "email": "deleted@gmial.com",
+    "email": "newnew@gmial.com",
     "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"
   },
   loading: false,
