@@ -107,4 +107,24 @@ export interface Icomment {
   comment: string;
 }
 
-
+export interface ProductDetails {
+  ProductVariant: {
+    id: number;
+    price:number,
+    product: {
+      name: string;
+      description: string;
+      coverPhoto: string;
+      isBestSeller: boolean;
+      slug: string;
+      isLimited: boolean;
+    };
+    color: {
+      color: string;
+    };
+    size: {
+      size: string;
+    };
+  };
+  qty: number;
+}

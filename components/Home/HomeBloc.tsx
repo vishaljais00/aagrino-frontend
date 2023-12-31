@@ -28,9 +28,6 @@ const HomeBloc = () => {
                   <div className="flex flex-wrap -m-4">
                     {data[item].data?.map(
                       (innerItem: IThemeList, index: number) => {
-                        if (!innerItem.coverImage) {
-                          console.log("JSS log :", { innerItem });
-                        }
                         return (
                           <CatogaryBloc
                             title={innerItem.title}
