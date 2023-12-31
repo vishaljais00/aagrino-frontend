@@ -2,8 +2,6 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -38,9 +36,10 @@ const images = [
 interface ResponsiveCarouselProps {
     items: [{image: string}];
     coverPhoto: string;
+    sx: any;
 }
 
-const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items , coverPhoto }) => {
+const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items , coverPhoto, sx  }) => {
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -66,29 +65,15 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items ,
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {items?.map((step, index) => (
+        {items?.map((step : {image: string}, index: number) => (
           <div key={index}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
               component="img"
-              sx={{
-                height: '100%',
-                display: 'block',
-                maxWidth: '100%',
-                overflow: 'hidden',
-                objectFit:'contain',
-                width: '100%',
-                maxHeight: {
-                  xs: '400px', // Extra small screens and up
-                  sm: '400px', // Small screens and up
-                  md: '300px', // Medium screens and up
-                  lg: '300px', // Large screens and up
-                  xl: '300px', // Extra large screens and up
-                },
-              }}
-                src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
-                // src={step?.image.slice(0,5)== 'https' ? step?.image : coverPhoto}
-                alt={images[index].label}
+              sx={sx}
+                // src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
+                src={step?.image?.slice(0,5)== 'https' ? step?.image : coverPhoto}
+                alt={images[index]?.label}
               />
             ) : null}
           </div>
