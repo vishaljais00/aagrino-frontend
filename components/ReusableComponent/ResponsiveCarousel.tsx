@@ -2,8 +2,6 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -66,7 +64,7 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items ,
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {items?.map((step, index) => (
+        {items?.map((step : {image: string}, index: number) => (
           <div key={index}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
@@ -86,9 +84,9 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items ,
                   xl: '300px', // Extra large screens and up
                 },
               }}
-                src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
-                // src={step?.image.slice(0,5)== 'https' ? step?.image : coverPhoto}
-                alt={images[index].label}
+                // src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
+                src={step?.image?.slice(0,5)== 'https' ? step?.image : coverPhoto}
+                alt={images[index]?.label}
               />
             ) : null}
           </div>
