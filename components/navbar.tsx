@@ -20,7 +20,8 @@ const Navbar: React.FC = () => {
   const [trigger, { isSuccess, status, data }] = useSearchProductsMutation();
 
   useEffect(() => {
-    if (searchValue && isSuccess) {
+    console.log("JSS log :", { data, isSuccess, status, searchValue,debounce });
+    if (searchValue) {
       trigger({ inputData: searchValue });
     }
   }, [debounce]);
