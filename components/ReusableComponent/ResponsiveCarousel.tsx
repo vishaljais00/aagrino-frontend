@@ -36,10 +36,11 @@ const images = [
 ];
 
 interface ResponsiveCarouselProps {
-    items: JSX.Element[];
+    items: [{image: string}];
+    coverPhoto: string;
 }
 
-const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items }) => {
+const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items , coverPhoto }) => {
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -58,29 +59,36 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items }
   };
 
   return (
-    <Box sx={{ maxWidth: '100%', flexGrow: 1, }}>
+    <Box sx={{ maxWidth: '100%', flexGrow: 1,}}>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {images.map((step, index) => (
-          <div key={step.label}>
+        {items?.map((step, index) => (
+          <div key={index}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
-                component="img"
-                sx={{
-                  height: '100%',
-                  display: 'block',
-                  maxWidth: '100%',
-                //   minHeight: '400px',
-                //   minWidth: '400px',
-                  overflow: 'hidden',
-                  width: '100%',
-                }}
-                src={step.imgPath}
-                alt={step.label}
+              component="img"
+              sx={{
+                height: '100%',
+                display: 'block',
+                maxWidth: '100%',
+                overflow: 'hidden',
+                objectFit:'contain',
+                width: '100%',
+                maxHeight: {
+                  xs: '400px', // Extra small screens and up
+                  sm: '400px', // Small screens and up
+                  md: '300px', // Medium screens and up
+                  lg: '300px', // Large screens and up
+                  xl: '300px', // Extra large screens and up
+                },
+              }}
+                src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
+                // src={step?.image.slice(0,5)== 'https' ? step?.image : coverPhoto}
+                alt={images[index].label}
               />
             ) : null}
           </div>

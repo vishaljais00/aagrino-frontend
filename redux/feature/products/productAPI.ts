@@ -46,6 +46,7 @@ export const productsApi = createApi({
         body: searchData,
       }),
     }),
+    
   }),
 
 });

@@ -22,6 +22,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     if (searchValue && isSuccess) {
       trigger({ inputData: searchValue });
+      console.log(data)
     }
   }, [debounce]);
 

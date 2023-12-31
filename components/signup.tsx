@@ -43,7 +43,7 @@ const Signup: React.FC = () => {
 
   useEffect(() => {
     // Reset API error when userData.error changes
-    if (userData.error) {
+    if (userData?.error) {
       setError("email", {
         type: "manual",
         message: userData.error, // Reset the API error message

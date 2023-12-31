@@ -96,3 +96,15 @@ export interface ICoupons {
   validTill: string;
   createdAt: string;
 }
+
+export interface Irating {
+  slug: string;
+  rating: number;
+}
+
+export interface Icomment {
+  slug: string;
+  comment: string;
+}
+
+
