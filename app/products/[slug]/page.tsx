@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetProductBySlugQuery } from "@/redux/feature/products/productAPI";
 import { useParams } from "next/navigation";
 import ResponsiveCarousel from '@/components/ReusableComponent/ResponsiveCarousel'
@@ -15,6 +15,27 @@ import DynamicTypography from "@/components/DynamicTypography/DynamicTypography"
 import { usePostCommentMutation, usePostRatingMutation } from "@/redux/feature/rating/ratingApi";
 
 
+interface Iproduct {
+  "id": number,
+  "price": number,
+  "size": {
+    "size":  string
+  },
+  "color": {
+    "color": string
+  }
+}
+
+interface IReview {
+  comment: string;
+  user: {
+    profile: {
+      profilePic: string
+    },
+    name: string
+  }
+}
+
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -28,7 +49,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const SingleProduct = () => {
   const { slug = "" } = useParams();
-  const [selectedValue, setSelectedValue] = useState('a');
+
   const [value, setValue] = useState<number>(5);
   const [review, setReview] = useState<string>("");
 
@@ -37,13 +58,17 @@ const SingleProduct = () => {
   const [postRating, { isLoading: postRatingIsLoading, isError: postRatingIsError, isSuccess: postRatingIsSuccess, error: postRatingError }] = usePostRatingMutation(); 
   const [postComment, { isLoading: postCommentIsLoading, isError: postCommentIsError, isSuccess: postCommentIsSuccess, error: postCommentError }] = usePostCommentMutation();
   
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
+  const [sizeArr, setSizeArr] = useState<Iproduct[]>([]);
+  const [selectedProductItem, setelectedProductItem] = useState<Iproduct | null>(null);
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+    setSelectedColor(event.target.value );
   };
 
   const controlProps = (item: string) => ({
-    checked: selectedValue === item,
+    checked: selectedColor === item,
     onChange: handleChange,
     value: item,
     name: 'color-radio-button-demo',
@@ -67,11 +92,39 @@ const SingleProduct = () => {
     } catch (error) {
       console.log(error, 'error')
     }
-    console.log('Review submitted:', review , value , slug as string);
   };
 
-  // Use the 'slug' value to fetch product data
-  console.log(data, "data");
+  const findAllSizeByColor = (color: string) =>{
+    const arr: Iproduct[] =  data?.data?.variants?.filter((item : Iproduct)=>{
+         return item.color.color == color
+     })
+     setSizeArr(arr)
+     if(arr.length > 0){
+       setSelectedSize(arr[0]?.size?.size)
+       setelectedProductItem(arr[0])
+     }
+  }
+
+  const handlePriceAndSize = (pId: string) =>{
+    const p_selected_item: Iproduct = data?.data?.variants?.find((item : Iproduct)=> item.id == parseInt(pId))
+    if(p_selected_item){
+      setelectedProductItem(p_selected_item)
+    }
+    setSelectedSize(p_selected_item?.size?.size)
+  }
+
+  useEffect(() => {
+    if(data?.data?.variants[0]?.color?.color) {
+      setSelectedColor(data?.data?.variants[0]?.color?.color)
+    }
+  }, [data])
+
+  useEffect(()=>{
+    if(selectedColor !== ''){
+      findAllSizeByColor(selectedColor)
+    }
+  }, [selectedColor])
+  
   
   return (
     <>
@@ -79,7 +132,21 @@ const SingleProduct = () => {
       <Grid container spacing={4}>
         <Grid item lg={4} md={4} sm={12} xs={12}>
           <Item>
-            <ResponsiveCarousel items={data?.data?.ProductsImage} coverPhoto={data?.data?.coverPhoto} />
+            <ResponsiveCarousel items={data?.data?.ProductsImage} coverPhoto={data?.data?.coverPhoto} sx={{
+                height: '100%',
+                display: 'block',
+                maxWidth: '100%',
+                overflow: 'hidden',
+                objectFit:'contain',
+                width: '100%',
+                maxHeight: {
+                  xs: '400px', // Extra small screens and up
+                  sm: '400px', // Small screens and up
+                  md: '300px', // Medium screens and up
+                  lg: '300px', // Large screens and up
+                  xl: '300px', // Extra large screens and up
+                },
+              }} />
           </Item>
         </Grid>
         <Grid item lg={8} md={8} sm={12} xs={12}>
@@ -169,18 +236,18 @@ const SingleProduct = () => {
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex items-center">
                   <span className="mr-3 mt-1">Color</span>
-                  {data?.data?.variants?.map((item: any, i: number) => (
-                  <Radio key={i}
-                  {...controlProps(`${item.color}`)}
-                  sx={{
-                    color: `${item.color.toLowerCase()}`,
-                    '&.Mui-checked': {
-                      color: `${item.color.toLowerCase()}`,
-                    },
-                  }}
-                />
+                  {Array.from(new Set(data?.data?.variants?.map((variant: Iproduct) => variant.color.color ?? '')))?.map((item: any, i: number) => (
+                    <Radio
+                      key={i}
+                      {...controlProps(`${item}`)}
+                      sx={{
+                        color: `${item?.toLowerCase() ?? ''}`,
+                        '&.Mui-checked': {
+                          color: `${item?.toLowerCase() ?? ''}`,
+                        },
+                      }}
+                    />
                   ))}
-                
                   {/* <button className="border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none" />
                   <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none" />
                   <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none" /> */}
@@ -188,9 +255,9 @@ const SingleProduct = () => {
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-                    {data?.data?.variants?.map((item: any, i: number) =>
-                      <option key={i}>{item.size}</option>
+                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10" onChange={(e)=>{handlePriceAndSize(e.target.value)}}>
+                    {sizeArr?.map((item: Iproduct, i: number) =>
+                      <option key={i} selected={selectedSize == item.size.size} value={item.id}>{item.size.size}</option>
                     )}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
@@ -211,7 +278,7 @@ const SingleProduct = () => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  $58.00
+                  Rs.{selectedProductItem?.price}
                 </span>
                 <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
                   Add to cart 
@@ -266,8 +333,8 @@ const SingleProduct = () => {
         
         <Item sx={{ flexGrow: 1 , padding: 5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'initial' }}>
           <DynamicTypography variant="h6" content="review" />
-          {data?.data?.Comment.map((item: {comment: string , user: {name: string}} , i: number)=> 
-            <UserReview key={i} src = 'https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg' review = {item.comment}  username={item.user.name} />)}  
+          {data?.data?.Comment?.map((item: IReview , i: number)=> 
+            <UserReview key={i} review = {item.comment}  user={item.user} />)}  
         </Item>
         </Grid>
       </Grid>

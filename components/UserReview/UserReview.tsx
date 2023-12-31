@@ -9,20 +9,24 @@ import Typography from '@mui/material/Typography';
 
 
 interface IReview {
-    src: string;
     review: string;
-    username: string;
+    user: {
+      profile: {
+        profilePic: string
+      },
+      name: string
+    }
 }
 
-const UserReview: React.FC<IReview> = ({ src = 'https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg', review = '— Ill be in your neighborhood doing errands this…' , username='' }) => {
+const UserReview: React.FC<IReview> = ({ review = '— Ill be in your neighborhood doing errands this…' , user }) => {
   return (
     <List sx={{ width: '100%', bgcolor: '#f0f0f0' }}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src={src} />
+          <Avatar alt="Remy Sharp" src={user?.profile?.profilePic} />
         </ListItemAvatar>
         <ListItemText
-          primary={username}
+          primary={user?.name}
           secondary={
             <React.Fragment>
               <Typography
