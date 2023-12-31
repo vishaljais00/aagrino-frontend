@@ -13,6 +13,7 @@ import HoverRating from "@/components/ratingComponent/HoverRating";
 import UserReview from "@/components/UserReview/UserReview";
 import DynamicTypography from "@/components/DynamicTypography/DynamicTypography";
 import { usePostCommentMutation, usePostRatingMutation } from "@/redux/feature/rating/ratingApi";
+import { useAddCartMutation } from "@/redux/feature/cart/cart";
 
 
 interface Iproduct {
@@ -57,11 +58,12 @@ const SingleProduct = () => {
   const { data, error: getProductError, isLoading } = useGetProductBySlugQuery(slug as string);
   const [postRating, { isLoading: postRatingIsLoading, isError: postRatingIsError, isSuccess: postRatingIsSuccess, error: postRatingError }] = usePostRatingMutation(); 
   const [postComment, { isLoading: postCommentIsLoading, isError: postCommentIsError, isSuccess: postCommentIsSuccess, error: postCommentError }] = usePostCommentMutation();
+  const [addToCart, { isLoading: arrToCartIsLoading, isError: arrToCartIsError, isSuccess: arrToCartIsSuccess, error: arrToCartError }] = useAddCartMutation();
   
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
   const [sizeArr, setSizeArr] = useState<Iproduct[]>([]);
-  const [selectedProductItem, setelectedProductItem] = useState<Iproduct | null>(null);
+  const [selectedProductItem, setSelectedProductItem] = useState<Iproduct | null>(null);
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(event.target.value );
@@ -94,6 +96,16 @@ const SingleProduct = () => {
     }
   };
 
+  const productAddToCart = async() => {
+    try {
+      if(selectedProductItem !== null){
+        await addToCart({productVariantId: selectedProductItem?.id})
+      }
+    } catch (error) {
+      console.log(error, 'error')
+    }
+  };
+
   const findAllSizeByColor = (color: string) =>{
     const arr: Iproduct[] =  data?.data?.variants?.filter((item : Iproduct)=>{
          return item.color.color == color
@@ -101,14 +113,14 @@ const SingleProduct = () => {
      setSizeArr(arr)
      if(arr.length > 0){
        setSelectedSize(arr[0]?.size?.size)
-       setelectedProductItem(arr[0])
+       setSelectedProductItem(arr[0])
      }
   }
 
   const handlePriceAndSize = (pId: string) =>{
     const p_selected_item: Iproduct = data?.data?.variants?.find((item : Iproduct)=> item.id == parseInt(pId))
     if(p_selected_item){
-      setelectedProductItem(p_selected_item)
+      setSelectedProductItem(p_selected_item)
     }
     setSelectedSize(p_selected_item?.size?.size)
   }
@@ -255,9 +267,9 @@ const SingleProduct = () => {
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10" onChange={(e)=>{handlePriceAndSize(e.target.value)}}>
+                    <select value={selectedSize} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10" onChange={(e)=>{handlePriceAndSize(e.target.value)}}>
                     {sizeArr?.map((item: Iproduct, i: number) =>
-                      <option key={i} value={selectedSize == item.size.size} value={item.id}>{item.size.size}</option>
+                      <option key={i}  value={item.id}>{item.size.size}</option>
                     )}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
@@ -280,7 +292,7 @@ const SingleProduct = () => {
                 <span className="title-font font-medium text-2xl text-gray-900">
                   Rs.{selectedProductItem?.price}
                 </span>
-                <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+                <button onClick={()=>{productAddToCart()}} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
                   Add to cart 
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
