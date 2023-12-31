@@ -17,7 +17,6 @@ const initialState: IuserData = {
     "email": "newnew@gmial.com",
     "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"
   },
-  // data:null,
   loading: false,
   error: null
 };

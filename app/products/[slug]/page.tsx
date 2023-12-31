@@ -1,87 +1,129 @@
 "use client";
+import { useState } from "react";
 import { useGetProductBySlugQuery } from "@/redux/feature/products/productAPI";
 import { useParams } from "next/navigation";
+import ResponsiveCarousel from '@/components/ReusableComponent/ResponsiveCarousel'
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { TextField, Button } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import HoverRating from "@/components/ratingComponent/HoverRating";
+import UserReview from "@/components/UserReview/UserReview";
+import DynamicTypography from "@/components/DynamicTypography/DynamicTypography";
+import { usePostCommentMutation, usePostRatingMutation } from "@/redux/feature/rating/ratingApi";
+
+
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
+
 
 const SingleProduct = () => {
   const { slug = "" } = useParams();
+  const [selectedValue, setSelectedValue] = useState('a');
+  const [value, setValue] = useState<number>(5);
+  const [review, setReview] = useState<string>("");
+
+  
+  const { data, error: getProductError, isLoading } = useGetProductBySlugQuery(slug as string);
+  const [postRating, { isLoading: postRatingIsLoading, isError: postRatingIsError, isSuccess: postRatingIsSuccess, error: postRatingError }] = usePostRatingMutation(); 
+  const [postComment, { isLoading: postCommentIsLoading, isError: postCommentIsError, isSuccess: postCommentIsSuccess, error: postCommentError }] = usePostCommentMutation();
+  
+  
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
+
+  const controlProps = (item: string) => ({
+    checked: selectedValue === item,
+    onChange: handleChange,
+    value: item,
+    name: 'color-radio-button-demo',
+    inputProps: { 'aria-label': item },
+  });
+
+
+  const handleReviewChange = (event: any) => {
+    setReview(event.target.value);
+  };
+
+  const handleReviewSubmit = async() => {
+    // Handle the review submission logic
+   
+    try {
+      if(typeof(slug) == 'string'){
+        await postRating({slug, rating: value })
+        await postComment({slug ,comment: review })
+      }
+      
+    } catch (error) {
+      console.log(error, 'error')
+    }
+    console.log('Review submitted:', review , value , slug as string);
+  };
 
   // Use the 'slug' value to fetch product data
-
-  const { data, error, isLoading } = useGetProductBySlugQuery(slug as string);
+  console.log(data, "data");
+  
   return (
     <>
-      <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-24 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <img
-              alt="ecommerce"
-              className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-              src="https://dummyimage.com/400x400"
-            />
-            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+    <Box sx={{ flexGrow: 1 , padding: 5 }}>
+      <Grid container spacing={4}>
+        <Grid item lg={4} md={4} sm={12} xs={12}>
+          <Item>
+            <ResponsiveCarousel items={data?.data?.ProductsImage} coverPhoto={data?.data?.coverPhoto} />
+          </Item>
+        </Grid>
+        <Grid item lg={8} md={8} sm={12} xs={12}>
+          <Item sx={{ textAlign: 'left' }}> 
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 BRAND NAME
               </h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                {data?.data?.name ||  "Blue-Denim-Jeans"}
+              <h1 className="text-gray-900 text-xl title-font font-medium mb-1 mt-4">
+                {data?.data?.name ||  "Fam locavore"}
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
+                {
+                  Array.from({ length: 5 }).map((item, i) => (
+                    <span key={i}>
+                      {i < (data?.data?.avgRating > 0 ? data?.data?.avgRating : 4) ? (
+                        <svg
+                          fill="currentColor"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          className="w-4 h-4 text-indigo-500"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      ) : (
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          className="w-4 h-4 text-indigo-500"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      )}
+                    </span>
+                  ))
+                }
+
                   <span className="text-gray-600 ml-3">4 Reviews</span>
                 </span>
                 <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s">
@@ -125,20 +167,31 @@ const SingleProduct = () => {
               </div>
               <p className="leading-relaxed">{data?.data?.description || "Blue-Denim-Jeans"}</p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-                <div className="flex">
-                  <span className="mr-3">Color</span>
-                  <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none" />
-                  <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none" />
-                  <button className="border-2 border-gray-300 ml-1 bg-indigo-500 rounded-full w-6 h-6 focus:outline-none" />
+                <div className="flex items-center">
+                  <span className="mr-3 mt-1">Color</span>
+                  {data?.data?.variants?.map((item: any, i: number) => (
+                  <Radio key={i}
+                  {...controlProps(`${item.color}`)}
+                  sx={{
+                    color: `${item.color.toLowerCase()}`,
+                    '&.Mui-checked': {
+                      color: `${item.color.toLowerCase()}`,
+                    },
+                  }}
+                />
+                  ))}
+                
+                  {/* <button className="border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none" />
+                  <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none" />
+                  <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none" /> */}
                 </div>
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
                     <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-                      <option>SM</option>
-                      <option>M</option>
-                      <option>L</option>
-                      <option>XL</option>
+                    {data?.data?.variants?.map((item: any, i: number) =>
+                      <option key={i}>{item.size}</option>
+                    )}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg
@@ -161,7 +214,7 @@ const SingleProduct = () => {
                   $58.00
                 </span>
                 <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
-                  Button
+                  Add to cart 
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg
@@ -176,12 +229,52 @@ const SingleProduct = () => {
                   </svg>
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          </Item>
+        </Grid>
+      </Grid>
+    </Box>    
+    {/* review box */}
+
+    <Box sx={{ flexGrow: 1 , padding: 5 }}>
+      <Grid container spacing={2}>
+        <Grid item lg={5}  md={5} sm={12} xs={12}>
+          <Item sx={{ flexGrow: 1 , padding: 5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <HoverRating value={value} setValue={setValue} />
+              <TextField
+                id="outlined-multiline-flexible"
+                label="Write your review"
+                multiline
+                rows={4}
+                value={review}
+                onChange={handleReviewChange}
+                variant="outlined"
+                fullWidth
+                style={{ marginBottom: 16 , marginTop: 10}}
+              />
+
+              <Button
+              variant="outlined" 
+              color="success"
+              onClick={handleReviewSubmit}
+              type="submit"
+              >
+              Submit Review
+            </Button>
+          </Item>
+        </Grid>
+        <Grid item lg={7}  md={7} sm={12} xs={12}>
+        
+        <Item sx={{ flexGrow: 1 , padding: 5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'initial' }}>
+          <DynamicTypography variant="h6" content="review" />
+          {data?.data?.Comment.map((item: {comment: string , user: {name: string}} , i: number)=> 
+            <UserReview key={i} src = 'https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg' review = {item.comment}  username={item.user.name} />)}  
+        </Item>
+        </Grid>
+      </Grid>
+    </Box>
     </>
   );
 };
 
 export default SingleProduct;
+

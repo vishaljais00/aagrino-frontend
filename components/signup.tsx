@@ -1,5 +1,5 @@
 // pages/signup.tsx
-
+"use client";
 import { useUserSignupMutation } from "@/redux/feature/users/userAPI";
 import { RootState } from "@/redux/store";
 import React, { useEffect } from "react";
@@ -43,7 +43,7 @@ const Signup: React.FC = () => {
 
   useEffect(() => {
     // Reset API error when userData.error changes
-    if (userData.error) {
+    if (userData?.error) {
       setError("email", {
         type: "manual",
         message: userData.error, // Reset the API error message
