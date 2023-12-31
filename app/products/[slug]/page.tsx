@@ -257,7 +257,7 @@ const SingleProduct = () => {
                   <div className="relative">
                     <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10" onChange={(e)=>{handlePriceAndSize(e.target.value)}}>
                     {sizeArr?.map((item: Iproduct, i: number) =>
-                      <option key={i} selected={selectedSize == item.size.size} value={item.id}>{item.size.size}</option>
+                      <option key={i} value={selectedSize == item.size.size} value={item.id}>{item.size.size}</option>
                     )}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">

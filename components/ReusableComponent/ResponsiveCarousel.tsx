@@ -1,12 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+// import Carousel from '@mui/x-data-grid-pro/Carousel';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -39,7 +41,7 @@ interface ResponsiveCarouselProps {
     sx: any;
 }
 
-const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items , coverPhoto, sx  }) => {
+const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items = [] , coverPhoto, sx  }) => {
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -65,7 +67,7 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items ,
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {items?.map((step : {image: string}, index: number) => (
+        {items && items.length > 0 ? items?.map((step : {image: string}, index: number) => (
           <div key={index}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
@@ -77,7 +79,21 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items ,
               />
             ) : null}
           </div>
-        ))}
+        )) : 
+        images?.map((step : {label: string, imgPath: string}, index: number) => (
+          <div key={index}>
+            {Math.abs(activeStep - index) <= 2 ? (
+              <Box
+              component="img"
+              sx={sx}
+                // src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
+                src={step?.imgPath}
+                alt={step?.label}
+              />
+            ) : null}
+          </div>
+        ))
+      }
       </AutoPlaySwipeableViews>
       <MobileStepper
         steps={maxSteps}
@@ -113,3 +129,47 @@ const SwipeableTextMobileStepper: React.FC<ResponsiveCarouselProps> = ({ items ,
 }
 
 export default SwipeableTextMobileStepper;
+
+
+
+
+
+// const SwipeableTextMobileStepper : React.FC<ResponsiveCarouselProps> = ({ items , coverPhoto, sx  }) => {
+//   const [index, setIndex] = React.useState(0);
+
+//   const handleNext = () => {
+//     setIndex((prevIndex) => (prevIndex + 1) % images.length);
+//   };
+
+//   const handlePrev = () => {
+//     setIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+//   };
+
+//   return (
+//     <Paper elevation={3} style={{ padding: 16 }}>
+//       <Carousel index={index} onRequestChange={setIndex} animation="fade">
+//       {items?.map((step : {image: string}, index: number) => (
+//           <div key={index}>
+//               <Box
+//               component="img"
+//               sx={sx}
+//                 // src={step?.image.slice(0,5)== 'https' ? step?.image : images[index].imgPath}
+//                 src={step?.image?.slice(0,5)== 'https' ? step?.image : coverPhoto}
+//                 alt={images[index]?.label}
+//               />
+//           </div>
+//         ))}
+//       </Carousel>
+//       <div style={{ marginTop: 16, textAlign: 'center' }}>
+//         <Button onClick={handlePrev} disabled={index === 0}>
+//           Previous
+//         </Button>
+//         <Button onClick={handleNext} disabled={index === images.length - 1} style={{ marginLeft: 16 }}>
+//           Next
+//         </Button>
+//       </div>
+//     </Paper>
+//   );
+// };
+
+// export default SwipeableTextMobileStepper;
