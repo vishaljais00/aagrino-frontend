@@ -12,7 +12,7 @@ import { userAuthApi } from './userAPI';
 const initialState: IuserData = {
   // data: AgData !== null ? JSON.parse(AgData) : null,
   data: {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwMzgzNzcyMiwiZXhwIjoxNzA0NDQyNTIyfQ.8_k01t6egWST3smIq4gyJMBJMQTuPqhayxD19MSs73s",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwNDExMjIyNywiZXhwIjoxNzA0NzE3MDI3fQ.GUEiUFXQ9X6XpUQBleEp7XFBz7pZUN6eOvD-NdwxrLM",
     "username": "Dev Gohari",
     "email": "newnew@gmial.com",
     "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"

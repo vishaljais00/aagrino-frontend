@@ -1,19 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useGetProductBySlugQuery } from "@/redux/feature/products/productAPI";
-import { useParams } from "next/navigation";
-import ResponsiveCarousel from '@/components/ReusableComponent/ResponsiveCarousel'
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { TextField, Button } from '@mui/material';
-import Radio from '@mui/material/Radio';
-import HoverRating from "@/components/ratingComponent/HoverRating";
-import UserReview from "@/components/UserReview/UserReview";
 import DynamicTypography from "@/components/DynamicTypography/DynamicTypography";
-import { usePostCommentMutation, usePostRatingMutation } from "@/redux/feature/rating/ratingApi";
+import ResponsiveCarousel from '@/components/ReusableComponent/ResponsiveCarousel';
+import UserReview from "@/components/UserReview/UserReview";
+import HoverRating from "@/components/ratingComponent/HoverRating";
 import { useAddCartMutation } from "@/redux/feature/cart/cart";
+import { useGetProductBySlugQuery } from "@/redux/feature/products/productAPI";
+import { usePostCommentMutation, usePostRatingMutation } from "@/redux/feature/rating/ratingApi";
+import { Button, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Radio from '@mui/material/Radio';
+import { styled } from '@mui/material/styles';
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 
 interface Iproduct {
