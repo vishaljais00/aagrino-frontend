@@ -18,7 +18,8 @@ const initialState: IuserData = {
     "pic": "https://i.pinimg.com/236x/4e/2b/88/4e2b88baa1d41926a23b05180456fb56.jpg"
   },
   loading: false,
-  error: null
+  error: null,
+  productSearch: ""
 };
 
 export const signInWithGoogle = createAsyncThunk(
@@ -133,7 +134,9 @@ const userSlice = createSlice({
       state.error = null;
       removeData(LOCAL_USER);
     },
-
+    setSearch: (state, action: PayloadAction<{ value: string }>) => {
+      state.productSearch = action.payload.value
+    }
   },
   extraReducers: (builder) => {
     builder.addMatcher(userAuthApi.endpoints.userAuth.matchFulfilled, (state, { payload }) => {
@@ -171,7 +174,7 @@ const userSlice = createSlice({
   }
 });
 
-export const { userStart, userSuccess, userFailure, clearUser } = userSlice.actions;
+export const { userStart, userSuccess, userFailure, clearUser, setSearch } = userSlice.actions;
 export default userSlice.reducer;
 
 

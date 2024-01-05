@@ -1,6 +1,6 @@
 "use client";
 import { useDebounce } from "@/hooks";
-import { useSearchProductsMutation } from "@/redux/feature/products/productAPI";
+import { setSearch } from "@/redux/feature/users/userSlice";
 import { RootState } from "@/redux/store";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -9,20 +9,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import icon from "./Icon/icon.png";
 import BasicDemo from "./MenuBar/MenuBar";
 import AccountMenu from "./accountMenu";
 const Navbar: React.FC = () => {
   const userData = useSelector((state: RootState) => state?.user?.data);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [searchValue, setsearchValue] = useState<string>("");
   const debounce = useDebounce(searchValue, 500);
-  const [trigger, { isSuccess, status, data }] = useSearchProductsMutation();
 
   useEffect(() => {
     if (searchValue) {
-      trigger({ inputData: searchValue });
+      dispatch(setSearch({ value: searchValue }));
     }
   }, [debounce]);
 

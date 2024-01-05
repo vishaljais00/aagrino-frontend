@@ -53,6 +53,7 @@ export interface IuserData {
   data: UserState | null;
   loading: boolean;
   error: string | null;
+  productSearch: string
 }
 export interface ITheme {
   title: string
@@ -110,7 +111,7 @@ export interface Icomment {
 export interface ProductDetails {
   ProductVariant: {
     id: number;
-    price:number,
+    price: number,
     product: {
       name: string;
       description: string;
