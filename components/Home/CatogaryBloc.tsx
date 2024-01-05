@@ -4,24 +4,26 @@ import Image from "next/image";
 const CatogaryBloc = (props: IProductList) => {
   return (
     <>
-      <div className="px-1 py-2 lg:w-1/3">
-        <div className="h-full bg-gray-100 bg-opacity-75 px-8 py-3 rounded-lg overflow-hidden text-center relative">
-          <h2 className="text-sm text-gray-500 uppercase tracking-widest mb-2">
-            {props.title}
-          </h2>
+      <div>
+        <a
+          href="#"
+          className="group relative flex h-96 items-end overflow-hidden rounded-lg bg-gray-100 p-4 shadow-lg"
+        >
           <Image
-            height={200}
-            width={200}
-            className="h-auto max-h-80 w-full object-cover object-center mb-4 rounded-md"
             src={props.coverPhoto}
             alt={props.title}
+            loading="lazy"
+            width={500}
+            height={500}
+            className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110"
           />
-          <div className="flex justify-center items-center">
-            <button className="bg-gray-900 text-white rounded-md py-2 px-4 uppercase text-xs tracking-wider hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
-              View Products
-            </button>
+          <div className="relative flex w-full flex-col rounded-lg bg-white p-4 text-center">
+            <span className="text-gray-500">{props.title}</span>
+            <span className="text-lg font-bold text-gray-800 lg:text-xl">
+              {props.title}
+            </span>
           </div>
-        </div>
+        </a>
       </div>
     </>
   );

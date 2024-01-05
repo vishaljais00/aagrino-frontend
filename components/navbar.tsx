@@ -33,6 +33,7 @@ const Navbar: React.FC = () => {
       </Link>
       <h1 className="text-xl text-gray-800 font-bold">Aagrino</h1>
       <BasicDemo />
+
       <div className="flex items-center">
         <div className="flex items-center">
           <svg
@@ -64,10 +65,10 @@ const Navbar: React.FC = () => {
           {userData ? (
             <>
               <Link href={"/cart"}>
-                <ShoppingCartIcon />
+                <ShoppingCartIcon titleAccess="Cart" />
               </Link>
               <Link href={"/favorites"}>
-                <FavoriteBorderIcon />
+                <FavoriteBorderIcon titleAccess="Favorites" />
               </Link>
             </>
           ) : (
