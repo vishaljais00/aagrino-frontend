@@ -34,7 +34,7 @@ export const adminApi = createApi({
     addCatogary: builder.mutation({
       query: (catogaryData: { title: string }) => ({
         url: `tagging/createcatogary`,
-        method: 'PUT',
+        method: 'POST',
         body: catogaryData,
       }),
       invalidatesTags: ['catogaryUpdate'],

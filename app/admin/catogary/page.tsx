@@ -14,9 +14,7 @@ const Catogary = () => {
           {data?.data?.length > 0 ? (
             data?.data?.map((item: { title: string; id: number }) => {
               return (
-                <>
-                  <CategoryList name={item.title} id={item.id} key={item.id} />
-                </>
+                <CategoryList name={item.title} id={item.id} key={item.id} />
               );
             })
           ) : (

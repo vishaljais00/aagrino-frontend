@@ -21,7 +21,7 @@ const page = () => {
                         type="text"
                         name="full_name"
                         id="full_name"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        className="h-10 bozzrder mt-1 rounded px-4 w-full bg-gray-50"
                         defaultValue=""
                       />
                     </div>
