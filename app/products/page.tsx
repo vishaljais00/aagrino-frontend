@@ -23,7 +23,7 @@ const Product = () => {
     if (isSuccess) {
       console.log("JSS log page :", data);
     }
-  }, [searchValue, isSuccess]);
+  }, [searchValue]);
 
   return (
     <>

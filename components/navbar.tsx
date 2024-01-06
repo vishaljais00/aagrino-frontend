@@ -22,6 +22,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     if (searchValue) {
+      console.log("asdd")
       dispatch(setSearch({ value: searchValue }));
     }
   }, [debounce]);

@@ -3,9 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import IconLabelButtons from "../AddButton/AddButton";
-import { useAddCatogaryMutation } from "@/redux/feature/admin/admin";
-import { useDispatch } from "react-redux";
-import { setLoader } from "@/redux/feature/loader/loaderSlice";
 import { toast } from "react-toastify";
 
 const style = {
@@ -25,7 +22,7 @@ interface Ifile {
   previewURL: any
 }
 
-export const MyModal = (props: { forData?: string }) => {
+export const MyModal = (props: { forData?: string , showImage: boolean, submitData: (formData: {title: string , image?: any}) => void }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,17 +31,23 @@ export const MyModal = (props: { forData?: string }) => {
     file: null,
     previewURL: null
   });
-  const [addCatogary, { isSuccess }] = useAddCatogaryMutation();
-  const dispatch = useDispatch();
 
-  const submitData = (title: string) => {
+  const handleData = (title: string) => {
+    let postData : {title: string , image? : any} = {
+      title
+    }
+
+    if(fileData.file){
+      postData.image =  fileData.file
+    }
+
+    props.submitData(postData)
+    setInputData("");
+    setFileData({
+      file: null,
+      previewURL: null
+    })
     handleClose();
-    dispatch(setLoader(true));
-    setTimeout(() => {
-      addCatogary({ title });
-      dispatch(setLoader(false));
-      setInputData("");
-    }, 3000);
   };
 
   const handleDrop = (e: any) => {
@@ -99,7 +102,9 @@ export const MyModal = (props: { forData?: string }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          {props.showImage ? 
+          <>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
             Upload Image
           </Typography>
           <div onDragOver={handleDragOver}  onDrop={handleDrop} className="border my-4 flex items-center flex-row-reverse justify-center border-gray-400 h-[150px] w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black">
@@ -122,7 +127,9 @@ export const MyModal = (props: { forData?: string }) => {
               </div>
             )}
           </div>
-
+          </> 
+          : <></> }
+    
           <Typography id="modal-modal-title" variant="h6" component="h2" >
             Add Catogary Title
           </Typography>
@@ -137,7 +144,7 @@ export const MyModal = (props: { forData?: string }) => {
           <IconLabelButtons
             title="Add"
             onClickFun={() => {
-              submitData(inputData);
+              handleData(inputData);
             }}
           />
         </Box>

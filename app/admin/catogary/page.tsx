@@ -1,11 +1,30 @@
 "use client";
 import CategoryList from "@/components/Catogary/CategoryList";
 import { MyModal } from "@/components/Modal/commanModal";
-import { useGetCatogaryQuery } from "@/redux/feature/admin/admin";
+import { useAddCatogaryMutation, useGetCatogaryQuery } from "@/redux/feature/admin/admin";
+import { setLoader } from "@/redux/feature/loader/loaderSlice";
 import { Typography } from "@mui/material";
+import { useDispatch} from "react-redux";
 
 const Catogary = () => {
   const { data, error, isLoading } = useGetCatogaryQuery(0);
+  const [addCatogary, { isSuccess }] = useAddCatogaryMutation();
+  const dispatch = useDispatch()
+
+  const submitData = async(body: {title: string , image? : any}) => {
+    try {
+      
+      setTimeout(() => {
+      console.log("body",body)
+      addCatogary(body);
+      dispatch(setLoader(false));
+    }, 3000);
+ 
+    } catch (error) {
+      
+    }
+
+  };
 
   return (
     <>
@@ -22,7 +41,7 @@ const Catogary = () => {
           )}
         </div>
         <div className="flex justify-center mb-8">
-          <MyModal />
+          <MyModal showImage={true} submitData={submitData} />
         </div>
       </ul>
     </>
@@ -30,3 +49,4 @@ const Catogary = () => {
 };
 
 export default Catogary;
+ 
