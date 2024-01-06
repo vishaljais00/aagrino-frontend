@@ -36,7 +36,6 @@ export const MyModal = (props: { forData?: string , showImage: boolean, submitDa
     let postData : {title: string , image? : any} = {
       title
     }
-
     if(fileData.file){
       postData.image =  fileData.file
     }
@@ -104,7 +103,7 @@ export const MyModal = (props: { forData?: string , showImage: boolean, submitDa
         <Box sx={style}>
           {props.showImage ? 
           <>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Typography id="modal-modal-title" variant="h6" component="h2">
             Upload Image
           </Typography>
           <div onDragOver={handleDragOver}  onDrop={handleDrop} className="border my-4 flex items-center flex-row-reverse justify-center border-gray-400 h-[150px] w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black">

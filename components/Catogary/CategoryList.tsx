@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { EditModal } from "../Modal/EditModal";
 import { Edit } from "@mui/icons-material";
 
-const CategoryList = (props: { id: number; name: string }) => {
+const CategoryList = (props: { id: number; name: string ; coverPhoto: string; showImage: boolean}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   
@@ -18,7 +18,7 @@ const CategoryList = (props: { id: number; name: string }) => {
           <Button onClick={handleOpen}>
             <Edit />
           </Button>
-          <EditModal open={open} id={props.id} forData={props.name} setOpen={setOpen} />
+          <EditModal showImage={props.showImage} coverPhoto={props.coverPhoto} open={open} id={props.id} forData={props.name} setOpen={setOpen} />
         </div>
       </div>
     </div>

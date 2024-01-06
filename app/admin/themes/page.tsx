@@ -27,10 +27,10 @@ const Catogary = () => {
     <>
       <ul className="bg-white shadow overflow-hidden sm:rounded-md -ml-48">
         <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2 p-4">
-          {data?.data?.map((item: { title: string; id: number }) => {
+          {data?.data?.map((item: { title: string; id: number; coverPhoto: string;}) => {
             return (
               <>
-                <CategoryList name={item.title} id={item.id} key={item.id} />
+                <CategoryList showImage={true} coverPhoto={item.coverPhoto} name={item.title} id={item.id} key={item.id} />
               </>
             );
           })}

@@ -27,6 +27,7 @@ export const adminApi = createApi({
       query: () => `tagging/themes`,
       providesTags: ['themeUpdate']
     }),
+    
     getTags: builder.query({
       query: () => `tagging/tags`,
       providesTags: ['tagsUpdate']
