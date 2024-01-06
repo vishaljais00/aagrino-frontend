@@ -14,8 +14,11 @@ const Product = () => {
   useEffect(() => {
     console.log("JSS log page poriduct page:", { searchValue });
     searchTrigger({
-      inputData: searchValue,
+      input: searchValue,
+      limit: 10,
+      page: 1,
     });
+    console.log("JSS log page :", { isSuccess });
 
     if (isSuccess) {
       console.log("JSS log page :", data);

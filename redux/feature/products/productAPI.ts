@@ -40,15 +40,15 @@ export const productsApi = createApi({
       },
     }),
     searchProducts: builder.mutation({
-      query: (searchData: { inputData: string }) => ({
+      query: (searchData: { input: string, limit: number, page: number }) => ({
         url: ``,
         method: 'POST',
         body: searchData,
       }),
     }),
-    
+
   }),
 
 });
 
-export const { useGetAllProductsQuery, useGetProductBySlugQuery, useGetCategoryQuery, useGetThemesQuery, useGetCategoryAllQuery, useGetCategoryNavQuery, useSearchProductsMutation,useLazyGetAllProductsQuery } = productsApi;
+export const { useGetAllProductsQuery, useGetProductBySlugQuery, useGetCategoryQuery, useGetThemesQuery, useGetCategoryAllQuery, useGetCategoryNavQuery, useSearchProductsMutation, useLazyGetAllProductsQuery } = productsApi;
