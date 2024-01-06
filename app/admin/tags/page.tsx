@@ -12,9 +12,7 @@ const Catogary = () => {
         <div className="flex flex-wrap lg:w-4/5 sm:mx-auto sm:mb-2 -mx-2 p-4">
           {data?.data?.map((item: { title: string; id: number }) => {
             return (
-              <>
-                <CategoryList name={item.title} id={item.id} key={item.id} />
-              </>
+              <CategoryList name={item.title} id={item.id} key={item.id} />
             );
           })}
         </div>
