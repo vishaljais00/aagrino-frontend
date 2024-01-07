@@ -7,22 +7,27 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import icon from "./Icon/icon.png";
 import BasicDemo from "./MenuBar/MenuBar";
 import AccountMenu from "./accountMenu";
+
 const Navbar: React.FC = () => {
   const userData = useSelector((state: RootState) => state?.user?.data);
   const router = useRouter();
+  //
+  const myPath = usePathname();
   const dispatch = useDispatch();
   const [searchValue, setsearchValue] = useState<string>("");
   const debounce = useDebounce(searchValue, 500);
 
   useEffect(() => {
     if (searchValue) {
-      console.log("asdd")
+      if (myPath === "/") {
+        router.push("products");
+      }
       dispatch(setSearch({ value: searchValue }));
     }
   }, [debounce]);
