@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { adminApi } from './feature/admin/admin';
 import { cartApi } from './feature/cart/cart';
+import { favoriteApi } from './feature/favorites/favorite';
 import { homePageApi } from './feature/homePage/homePage';
 import loaderReducer from './feature/loader/loaderSlice';
 import { productsApi } from './feature/products/productAPI';
@@ -17,10 +18,11 @@ export const store = configureStore({
     [adminApi.reducerPath]: adminApi.reducer,
     [productRatingApi.reducerPath]: productRatingApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
+    [favoriteApi.reducerPath]: favoriteApi.reducer,
     loader: loaderReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(userAuthApi.middleware).concat(productsApi.middleware).concat(homePageApi.middleware).concat(adminApi.middleware).concat(productRatingApi.middleware).concat(cartApi.middleware)
+    return getDefaultMiddleware().concat(userAuthApi.middleware).concat(productsApi.middleware).concat(homePageApi.middleware).concat(adminApi.middleware).concat(productRatingApi.middleware).concat(cartApi.middleware).concat(favoriteApi.middleware)
   },
 });
 

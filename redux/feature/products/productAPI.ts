@@ -27,7 +27,6 @@ export const productsApi = createApi({
       transformResponse: (response: { status: number, message: string, data: NavProduts[] }) => {
         // Transform the data structure here
         const transformedData = response.data.map((item: NavProduts) => {
-          console.log('JSS log productAPI :', {item})
           item.label = item.title;
           item.target = "catogary/" + item.slug
           if (item.subCategories?.length) {
