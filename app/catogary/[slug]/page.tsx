@@ -1,32 +1,24 @@
 "use client";
 import DynamicTypography from "@/components/DynamicTypography/DynamicTypography";
 import { IProduct } from "@/constants/interface";
-import { useSearchProductsMutation } from "@/redux/feature/products/productAPI";
+import { useGetProductsByCategoryQuery } from "@/redux/feature/products/productAPI";
 import { RootState } from "@/redux/store";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 
-const Product = () => {
-  const [searchTrigger, { isSuccess, status, data }] =
-    useSearchProductsMutation();
+const ProductCatogary = () => {
   const searchValue = useSelector(
     (state: RootState) => state?.user.productSearch
   );
-  useEffect(() => {
-    if (searchValue) {
-      searchTrigger({
-        input: searchValue,
-        limit: 10,
-        page: 1,
-      });
-    }
-  }, [searchValue]);
-
+  const searchParams = useParams()?.slug;
+  const { isSuccess, status, data } =
+    useGetProductsByCategoryQuery(searchParams);
+  console.log("JSS log page :", { data });
   return (
     <>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
-        <DynamicTypography content="Our Products" variant="h3" />
+        <DynamicTypography content="Products By Catogary" variant="h3" />
         <div className="grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-4">
           {data?.data.map((item: IProduct) => {
             return (
@@ -58,13 +50,13 @@ const Product = () => {
                       href="#"
                       className="text-lg font-bold text-gray-800 transition duration-100 hover:text-gray-500 lg:text-xl"
                     >
-                      Fancy Outfit
+                      {item.name}
                     </a>
                     <span className="text-gray-500">{item.Category.title}</span>
                   </div>
                   <div className="flex flex-col items-end">
                     <span className="font-bold text-gray-600 lg:text-lg">
-                      {item.variants[0].price}
+                      {item.variants[0]?.price || 500}
                     </span>
                     <span className="text-sm text-red-500 line-through">
                       $39.99
@@ -80,4 +72,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductCatogary;

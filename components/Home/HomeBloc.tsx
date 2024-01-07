@@ -3,6 +3,7 @@ import { HomeItemType } from "@/constants/enums";
 import { IThemeList } from "@/constants/interface";
 import { useGetHomeDataQuery } from "@/redux/feature/homePage/homePage";
 import { Typography } from "@mui/material";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Banner from "../Banner/Banner";
 import BigBanner from "../Banner/BigBanner";
@@ -45,11 +46,15 @@ const HomeBloc = () => {
             {data[item].data.length > 0 && (
               <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 {data[item].data?.map((innerItem: IThemeList) => (
-                  <CatogaryBloc
-                    title={innerItem.title}
-                    coverPhoto={innerItem?.coverPhoto}
+                  <Link
                     key={innerItem.slug}
-                  />
+                    href={"catogary/" + innerItem.slug}
+                  >
+                    <CatogaryBloc
+                      title={innerItem.title}
+                      coverPhoto={innerItem?.coverPhoto}
+                    />
+                  </Link>
                 ))}
               </div>
             )}

@@ -1,3 +1,5 @@
+import { MenuItem } from "primereact/menuitem";
+
 interface Category {
   title: string;
 }
@@ -12,17 +14,28 @@ interface ProductsImage {
 
 export interface IProduct {
   title: string;
-  coverImage: string;
+  coverPhoto: string;
   description: string;
   isBestSeller: boolean;
   isLimited: boolean;
   name: string;
   slug: string;
-  variants: any[]; // Define an interface for variants if needed
+  variants: ProductVariant[]; // Define an interface for variants if needed
   Category: Category;
   ProductTag: ProductTag[];
   ProductsImage: ProductsImage[];
 }
+
+interface ProductVariant {
+  color: string
+
+  id: number
+
+  price: number
+
+  size: number
+}
+
 export interface UserState {
   username: string | null;
   email: string | null;
@@ -74,10 +87,13 @@ export interface IThemeList {
   name: string
   coverImage: string
 }
-export interface NavProduts {
+export interface NavProduts extends MenuItem {
   title: string;
   label: string
+  target: string
+  slug: string;
   subCategories: {
+    slug: string;
     title: string;
   }[];
   items?: {
@@ -129,3 +145,4 @@ export interface ProductDetails {
   };
   qty: number;
 }
+
