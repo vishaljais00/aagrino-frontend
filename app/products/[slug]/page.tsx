@@ -61,10 +61,10 @@ const SingleProduct = () => {
   const [addToCart, { isLoading: arrToCartIsLoading, isError: arrToCartIsError, isSuccess: arrToCartIsSuccess, error: arrToCartError }] = useAddCartMutation();
   
   const [selectedColor, setSelectedColor] = useState('');
-  const [selectedSize, setSelectedSize] = useState('');
   const [sizeArr, setSizeArr] = useState<Iproduct[]>([]);
   const [selectedProductItem, setSelectedProductItem] = useState<Iproduct | null>(null);
   
+  console.log("selectedSize",selectedProductItem)
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(event.target.value );
   };
@@ -112,7 +112,6 @@ const SingleProduct = () => {
      })
      setSizeArr(arr)
      if(arr.length > 0){
-       setSelectedSize(arr[0]?.size?.size)
        setSelectedProductItem(arr[0])
      }
   }
@@ -122,7 +121,7 @@ const SingleProduct = () => {
     if(p_selected_item){
       setSelectedProductItem(p_selected_item)
     }
-    setSelectedSize(p_selected_item?.size?.size)
+
   }
 
   useEffect(() => {
@@ -260,6 +259,8 @@ const SingleProduct = () => {
                       }}
                     />
                   ))}
+
+
                   {/* <button className="border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none" />
                   <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none" />
                   <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none" /> */}
@@ -267,7 +268,7 @@ const SingleProduct = () => {
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select value={selectedSize} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10" onChange={(e)=>{handlePriceAndSize(e.target.value)}}>
+                    <select value={selectedProductItem?.id} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10" onChange={(e)=>{handlePriceAndSize(e.target.value)}}>
                     {sizeArr?.map((item: Iproduct, i: number) =>
                       <option key={i}  value={item.id}>{item.size.size}</option>
                     )}

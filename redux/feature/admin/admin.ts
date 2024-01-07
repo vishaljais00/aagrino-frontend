@@ -13,9 +13,9 @@ export const adminApi = createApi({
       if (userData?.token) {
         headers.set('Authorization', `Bearer ${userData?.token}`);
       }
-      headers.set('Content-Type', 'application/json');
+      
       return headers;
-    },
+    },  
   }),
   tagTypes: ['catogaryUpdate', "themeUpdate", 'tagsUpdate'],
   endpoints: (builder) => ({
@@ -27,16 +27,74 @@ export const adminApi = createApi({
       query: () => `tagging/themes`,
       providesTags: ['themeUpdate']
     }),
+    
     getTags: builder.query({
       query: () => `tagging/tags`,
       providesTags: ['tagsUpdate']
     }),
+
     addCatogary: builder.mutation({
-      query: (catogaryData: { title: string }) => ({
-        url: `tagging/createcatogary`,
-        method: 'POST',
-        body: catogaryData,
-      }),
+      query: (catogaryData: { title: string, image?: any }) => {
+        const body = new FormData();
+        if (catogaryData.image) {
+          body.append('image', catogaryData.image);
+        }
+        body.append('title', catogaryData.title);
+        body.append('slug', catogaryData.title.trim().toLowerCase().replace(" ", '-'));
+      
+        return {
+          url: `tagging/createcatogary`,
+          method: 'POST',
+          body,
+          headers: {
+            'Accept': 'multipart/form-data',
+          },
+        };
+      },
+      
+      invalidatesTags: ['catogaryUpdate'],
+      transformResponse: (_response: { status: number, data: unknown, message: string }) => {
+        toast.success(_response.message)
+        return _response.data
+      },
+    }),
+
+    addTheme: builder.mutation({
+      query: (catogaryData: { title: string, image?: any }) => {
+        const body = new FormData();
+        if (catogaryData.image) {
+          body.append('image', catogaryData.image);
+        }
+        body.append('title', catogaryData.title);
+        // body.append('slug', catogaryData.title.trim().toLowerCase().replace(" ", '-'));
+      
+        return {
+          url: `tagging/craetetheme`,
+          method: 'POST',
+          body,
+          headers: {
+            'Accept': 'multipart/form-data',
+          },
+        };
+      },
+      
+      invalidatesTags: ['catogaryUpdate'],
+      transformResponse: (_response: { status: number, data: unknown, message: string }) => {
+        toast.success(_response.message)
+        return _response.data
+      },
+    }),
+
+
+    addTag: builder.mutation({
+      query: (catogaryData: { title: string, image?: any }) => {    
+        return {
+          url: `tagging/createtag`,
+          method: 'POST',
+          body: catogaryData,
+        };
+      },
+      
       invalidatesTags: ['catogaryUpdate'],
       transformResponse: (_response: { status: number, data: unknown, message: string }) => {
         toast.success(_response.message)
@@ -62,4 +120,4 @@ export const adminApi = createApi({
 
 });
 
-export const { useGetCatogaryQuery, useAddCatogaryMutation, useUpdateCatogaryMutation, useGetTagsQuery, useGetThemesQuery, useGetHomePageQuery } = adminApi;
+export const { useGetCatogaryQuery, useAddTagMutation, useAddCatogaryMutation, useUpdateCatogaryMutation, useGetTagsQuery, useGetThemesQuery, useGetHomePageQuery } = adminApi;
