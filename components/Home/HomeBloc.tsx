@@ -24,7 +24,6 @@ const HomeBloc = () => {
       <BigBanner />
       {renderData.map((item: any) => {
         const isBanner = data[item].type === HomeItemType.BANNER;
-        console.log("JSS log HomeBloc :", item);
         return isBanner ? (
           <Banner
             key={data[item].as}
