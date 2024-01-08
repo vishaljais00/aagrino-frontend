@@ -11,7 +11,6 @@ const FavoriteItems = () => {
   return (
     <div className="p-8">
       <DynamicTypography content="Your Favorite Items" variant="h3" />
-      {/* <h2 className="text-2xl font-semibold mb-4">Your Favorite Items</h2> */}
       <p className="mb-6">
         There are {data?.data?.length} products in this list
       </p>

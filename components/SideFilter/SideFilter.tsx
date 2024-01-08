@@ -1,4 +1,24 @@
+"use client";
+
+import { Ifilter } from "@/constants/interface";
+import { useGetSideFilterQuery } from "@/redux/feature/products/productAPI";
+import { useEffect, useState } from "react";
+
 const SideFilter = () => {
+  const { isSuccess, data } = useGetSideFilterQuery(0);
+  const [myFilters, setmMyFilters] = useState<Ifilter>({
+    category: [],
+    colors: [],
+    sizes: [],
+    theme: [],
+  });
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("JSS log SideFilter :", data);
+      setmMyFilters(data.data);
+    }
+  }, [isSuccess]);
+
   return (
     <section className="font-poppins w-1/4">
       <div className="px-4 py-4 ml-4 mx-auto">
@@ -8,45 +28,19 @@ const SideFilter = () => {
               <h2 className="text-2xl font-bold "> Categories</h2>
               <div className="w-16 pb-2 mb-6 border-b border-rose-600" />
               <ul>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg">Biscuits</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2 " />
-                    <span className="text-lg">Fruits</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg">Seafood</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg">Vegetables</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg">Frozen Foods &amp; Staples</span>
-                  </label>
-                </li>
+                {myFilters.category.map((item) => {
+                  return (
+                    <li key={item.title} className="mb-4">
+                      <label htmlFor="" className="flex items-center ">
+                        <input type="checkbox" className="w-4 h-4 mr-2" />
+                        <span className="text-lg">{item.title}</span>
+                      </label>
+                    </li>
+                  );
+                })}
               </ul>
-              <a
-                href="#"
-                className="text-base font-medium text-blue-500 hover:underline "
-              >
-                View More
-              </a>
             </div>
-            <div className="p-4 mb-5 bg-white border border-gray-200">
+            {/* <div className="p-4 mb-5 bg-white border border-gray-200">
               <h2 className="text-2xl font-bold">Product Status</h2>
               <div className="w-16 pb-2 mb-6 border-b border-rose-600" />
               <ul>
@@ -63,42 +57,22 @@ const SideFilter = () => {
                   </label>
                 </li>
               </ul>
-            </div>
+            </div> */}
             <div className="p-4 mb-5 bg-white border border-gray-200  ">
-              <h2 className="text-2xl font-bold ">Brand</h2>
+              <h2 className="text-2xl font-bold ">Theme</h2>
               <div className="w-16 pb-2 mb-6 border-b border-rose-600 " />
               <ul>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg ">Apple</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg ">Oreo</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg ">Mango</span>
-                  </label>
-                </li>
-                <li className="mb-4">
-                  <label htmlFor="" className="flex items-center ">
-                    <input type="checkbox" className="w-4 h-4 mr-2" />
-                    <span className="text-lg ">Nebico</span>
-                  </label>
-                </li>
+                {myFilters.theme.map((item) => {
+                  return (
+                    <li key={item.slug} className="mb-4">
+                      <label htmlFor="" className="flex items-center ">
+                        <input type="checkbox" className="w-4 h-4 mr-2" />
+                        <span className="text-lg ">{item.title}</span>
+                      </label>
+                    </li>
+                  );
+                })}
               </ul>
-              <a
-                href="#"
-                className="text-base font-medium text-blue-500 hover:underline "
-              >
-                View More
-              </a>
             </div>
             <div className="p-4 mb-5 bg-white border border-gray-200  ">
               <h2 className="text-2xl font-bold ">Price</h2>
@@ -124,18 +98,16 @@ const SideFilter = () => {
               <h2 className="text-2xl font-bold ">Size</h2>
               <div className="w-16 pb-2 mb-6 border-b border-rose-600" />
               <div className="flex flex-wrap -mx-2 -mb-2">
-                <button className="py-1 mb-2 mr-1 border w-11 hover:border-blue-400  hover:text-blue-600">
-                  XL
-                </button>
-                <button className="py-1 mb-2 mr-1 border w-11 hover:border-blue-400 hover:text-blue-600   ">
-                  S
-                </button>
-                <button className="py-1 mb-2 mr-1 border w-11 hover:border-blue-400 hover:text-blue-600   ">
-                  M
-                </button>
-                <button className="py-1 mb-2 mr-1 border w-11 hover:border-blue-400 hover:text-blue-600   ">
-                  XS
-                </button>
+                {myFilters.sizes.map((item) => {
+                  return (
+                    <button
+                      key={item.size}
+                      className="py-1 mb-2 mr-3 border w-16 hover:border-blue-400  hover:text-blue-600"
+                    >
+                      {item.size}
+                    </button>
+                  );
+                })}
               </div>
             </div>
             <div className="p-4 mb-5 bg-white border border-gray-200">

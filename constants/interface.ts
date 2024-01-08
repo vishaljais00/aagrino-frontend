@@ -146,3 +146,21 @@ export interface ProductDetails {
   qty: number;
 }
 
+export interface Ifilter {
+  category: {
+    title: string
+  }[]
+
+  colors: {
+    color: string
+  }[]
+
+  sizes: {
+    size: string
+  }[]
+
+  theme: {
+    slug: string
+    title: string
+  }[]
+}

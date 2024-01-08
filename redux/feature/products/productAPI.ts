@@ -17,10 +17,6 @@ export const productsApi = createApi({
     }),
     getCategory: builder.query({
       query: () => `getcategory`
-      // query: () => `getcategory/all`
-    }),
-    getCategoryAll: builder.query({
-      query: () => `getcategory/all`
     }),
     getCategoryNav: builder.query({
       query: () => `getcategory/nav`,
@@ -47,6 +43,9 @@ export const productsApi = createApi({
         body: searchData,
       }),
     }),
+    getSideFilter: builder.query({
+      query: () => `sidefilter`,
+    }),
     getProductsByCategory: builder.query({
       query: (catogarySlug) => `catogary/${catogarySlug}`,
     }),
@@ -54,4 +53,4 @@ export const productsApi = createApi({
 
 });
 
-export const { useGetAllProductsQuery, useGetProductBySlugQuery, useGetCategoryQuery, useGetThemesQuery, useGetCategoryAllQuery, useGetCategoryNavQuery, useSearchProductsMutation, useLazyGetAllProductsQuery, useGetProductsByCategoryQuery } = productsApi;
+export const { useGetAllProductsQuery, useGetProductBySlugQuery, useGetCategoryQuery, useGetThemesQuery, useGetCategoryNavQuery, useSearchProductsMutation, useLazyGetAllProductsQuery, useGetProductsByCategoryQuery, useGetSideFilterQuery } = productsApi;
