@@ -114,36 +114,13 @@ const SideFilter = () => {
               <h2 className="text-2xl font-bold">Colors</h2>
               <div className="w-16 pb-2 mb-6 border-b border-rose-600" />
               <div className="flex flex-wrap -mx-2 -mb-2">
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-emerald-400" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-blue-700" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-rose-600" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-amber-700" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-green-700" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-pink-400" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-indigo-400" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-cyan-600" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-stone-400" />
-                </button>
-                <button className="p-1 mb-2 mr-4 ">
-                  <div className="w-5 h-5 bg-yellow-400" />
-                </button>
+                {myFilters.colors.map((item) => {
+                  return (
+                    <button key={item.color} className="p-1 mb-2 mr-4 ">
+                      <div style={{backgroundColor:item.color.toLowerCase()}} className={`w-5 h-5 bg-${item.color.toLowerCase()}-400`} />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
